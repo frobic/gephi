@@ -56,6 +56,7 @@ import org.gephi.graph.api.GraphModel;
 import org.gephi.graph.api.HierarchicalGraph;
 import org.gephi.graph.api.Node;
 import org.gephi.graph.api.NodeData;
+import org.gephi.graph.api.EdgeData;
 import org.gephi.layout.plugin.forceAtlas2.ForceFactory.AttractionForce;
 import org.gephi.layout.plugin.forceAtlas2.ForceFactory.RepulsionForce;
 import org.gephi.layout.spi.Layout;
@@ -65,6 +66,7 @@ import org.gephi.project.api.Workspace;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
+import java.lang.String;
 
 /**
  * ForceAtlas 2 Layout, manages each step of the computations.
@@ -205,7 +207,32 @@ public class ForceAtlas2 implements Layout {
             }
         } else if (getEdgeWeightInfluence() == 1) {
             for (Edge e : edges) {
-                Attraction.apply(e.getSource(), e.getTarget(), getWeight(e));
+				String verif = "ficelle" ;
+				EdgeData ed = e.getEdgeData() ;
+				String edLab = ed.getLabel() ;
+				double adjsize = 1. ;
+				if (isAdjustSizes()) {
+					adjsize = 10. ;
+				}
+				if (verif.equals(edLab)) {
+					Node n = e.getSource() ;
+					Node n2 = e.getTarget() ;
+					NodeData nData = n.getNodeData();
+					ForceAtlas2LayoutData nLayout = nData.getLayoutData();
+					NodeData nData2 = n2.getNodeData();
+					ForceAtlas2LayoutData nLayout2 = nData2.getLayoutData();
+					if ((nData.x()-nData2.x())*(nData.x()-nData2.x()) + (nData.y()-nData2.y())*(nData.y()-nData2.y()) > getWeight(e)*getWeight(e)*adjsize) {
+						double coeff = Math.sqrt((nData.x()-nData2.x())*(nData.x()-nData2.x()) + (nData.y()-nData2.y())*(nData.y()-nData2.y())) - getWeight(e)*adjsize ;
+						coeff = coeff / getWeight(e) ;
+						if (coeff > 75) {
+							coeff = 75 ;
+						}
+						Attraction.apply(e.getSource(), e.getTarget(), (adjsize+10.+coeff+100*Math.exp(-getWeight(e)/Math.sqrt(graph.getDegree(n))))*Math.sqrt(graph.getDegree(n2)));
+					}
+				}
+				else {
+					Attraction.apply(e.getSource(), e.getTarget(), getWeight(e));
+				}
             }
         } else {
             for (Edge e : edges) {
@@ -433,7 +460,7 @@ public class ForceAtlas2 implements Layout {
             setBarnesHutOptimize(false);
         }
         setBarnesHutTheta(1.2);
-        setThreadsCount(2);
+        setThreadsCount(16);
     }
 
     @Override

@@ -44,6 +44,8 @@ package org.gephi.preview.plugin.builders;
 import java.awt.Color;
 import org.gephi.data.attributes.api.AttributeModel;
 import org.gephi.graph.api.Graph;
+import org.gephi.graph.api.Edge;
+import org.gephi.graph.api.EdgeData;
 import org.gephi.graph.api.Node;
 import org.gephi.preview.api.Item;
 import org.gephi.preview.plugin.items.NodeItem;
@@ -67,7 +69,33 @@ public class NodeBuilder implements ItemBuilder {
             nodeItem.setData(NodeItem.Y, -n.getNodeData().y());
             nodeItem.setData(NodeItem.Z, n.getNodeData().z());
             nodeItem.setData(NodeItem.SIZE, n.getNodeData().getSize() * 2f);
-            nodeItem.setData(NodeItem.COLOR, new Color((int) (n.getNodeData().r() * 255),
+			int j = 0;
+			for (Edge e : graph.getEdges(n)) {
+				String verif = "ficelle" ;
+				EdgeData ed = e.getEdgeData() ;
+				String edLab = ed.getLabel() ;
+				if (verif.equals(edLab)) {
+					j++ ;
+				}
+			}
+			Color[] colortab = new Color[j];
+			nodeItem.setData(NodeItem.NBCOLOR,j) ;
+			j = 0 ;
+			for (Edge e : graph.getEdges(n)) {
+				String verif = "ficelle" ;
+				EdgeData ed = e.getEdgeData() ;
+				String edLab = ed.getLabel() ;
+				if (verif.equals(edLab)) {
+					Node n2 = e.getSource() ;
+					colortab[j] = new Color((int) (n2.getNodeData().r() * 255),
+											(int) (n2.getNodeData().g() * 255),
+											(int) (n2.getNodeData().b() * 255),
+											(int) (n2.getNodeData().alpha() * 255));
+					j++ ;
+				}
+			}
+			nodeItem.setData(NodeItem.COLORS,colortab) ;
+			nodeItem.setData(NodeItem.COLOR, new Color((int) (n.getNodeData().r() * 255),
                     (int) (n.getNodeData().g() * 255),
                     (int) (n.getNodeData().b() * 255),
                     (int) (n.getNodeData().alpha() * 255)));

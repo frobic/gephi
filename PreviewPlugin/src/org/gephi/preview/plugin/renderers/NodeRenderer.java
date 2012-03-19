@@ -92,6 +92,8 @@ public class NodeRenderer implements Renderer , Renderer.NamedRenderer {
         Float y = item.getData(NodeItem.Y);
         Float size = item.getData(NodeItem.SIZE);
         Color color = item.getData(NodeItem.COLOR);
+		Integer nbcolors = item.getData(NodeItem.NBCOLOR);
+		Color[] colors = item.getData(NodeItem.COLORS);
         Color borderColor = ((DependantColor) properties.getValue(PreviewProperty.NODE_BORDER_COLOR)).getColor(color);
         float borderSize = properties.getFloatValue(PreviewProperty.NODE_BORDER_WIDTH);
         int alpha = (int) ((properties.getFloatValue(PreviewProperty.NODE_OPACITY) / 100f) * 255f);
@@ -110,8 +112,19 @@ public class NodeRenderer implements Renderer , Renderer.NamedRenderer {
         } else {
             graphics.noStroke();
         }
-        graphics.fill(color.getRed(), color.getGreen(), color.getBlue(), alpha);
-        graphics.ellipse(x, y, size, size);
+		graphics.noStroke();
+		for (int i = 0 ; i < nbcolors ; i++) {
+			if (nbcolors == i+1) {
+				if (borderSize > 0) {
+					graphics.stroke(borderColor.getRed(), borderColor.getGreen(), borderColor.getBlue(), alpha);
+					graphics.strokeWeight(borderSize);
+				} else {
+					graphics.noStroke();
+				}
+			}
+			graphics.fill(colors[i].getRed(), colors[i].getGreen(), colors[i].getBlue(), alpha);
+			graphics.ellipse(x, y, (nbcolors-i)*size/nbcolors, (nbcolors-i	)*size/nbcolors);
+		}
     }
 
     public void renderSVG(Item item, SVGTarget target, PreviewProperties properties) {
