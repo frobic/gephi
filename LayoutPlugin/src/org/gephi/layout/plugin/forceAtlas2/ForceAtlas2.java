@@ -85,6 +85,7 @@ public class ForceAtlas2 implements Layout {
     private double speed;
     private boolean outboundAttractionDistribution;
     private boolean adjustSizes;
+	private boolean disableString;
     private boolean barnesHutOptimize;
     private double barnesHutTheta;
     private boolean linLogMode;
@@ -212,7 +213,7 @@ public class ForceAtlas2 implements Layout {
 				String edLab = ed.getLabel() ;
 				double adjsize = 1. ;
 				if (isAdjustSizes()) {
-					adjsize = 10. ;
+					adjsize = 8. ;
 				}
 				if (verif.equals(edLab)) {
 					Node n = e.getSource() ;
@@ -224,10 +225,15 @@ public class ForceAtlas2 implements Layout {
 					if ((nData.x()-nData2.x())*(nData.x()-nData2.x()) + (nData.y()-nData2.y())*(nData.y()-nData2.y()) > getWeight(e)*getWeight(e)*adjsize) {
 						double coeff = Math.sqrt((nData.x()-nData2.x())*(nData.x()-nData2.x()) + (nData.y()-nData2.y())*(nData.y()-nData2.y())) - getWeight(e)*adjsize ;
 						coeff = coeff / getWeight(e) ;
-						if (coeff > 75) {
-							coeff = 75 ;
+						if (coeff > 100) {
+							coeff = 100+Math.sqrt(coeff-100) ;
 						}
-						Attraction.apply(e.getSource(), e.getTarget(), (adjsize+10.+coeff+100*Math.exp(-getWeight(e)/Math.sqrt(graph.getDegree(n))))*Math.sqrt(graph.getDegree(n2)));
+						if (isDisableString()) {
+							
+						}
+						else {
+							Attraction.apply(e.getSource(), e.getTarget(), (adjsize+10.+coeff));
+						}
 					}
 				}
 				else {
@@ -376,6 +382,15 @@ public class ForceAtlas2 implements Layout {
                     NbBundle.getMessage(getClass(), "ForceAtlas2.adjustSizes.desc"),
                     "isAdjustSizes", "setAdjustSizes"));
 
+			properties.add(LayoutProperty.createProperty(
+														 this, Boolean.class,
+														 NbBundle.getMessage(getClass(), "ForceAtlas2.disableString.name"),
+														 FORCEATLAS2_BEHAVIOR,
+														 "ForceAtlas2.adjustSizes.name",
+														 NbBundle.getMessage(getClass(), "ForceAtlas2.disableString.desc"),
+														 "isDisableString", "setDisableString"));
+
+			
             properties.add(LayoutProperty.createProperty(
                     this, Double.class,
                     NbBundle.getMessage(getClass(), "ForceAtlas2.edgeWeightInfluence.name"),
@@ -444,6 +459,7 @@ public class ForceAtlas2 implements Layout {
         setOutboundAttractionDistribution(false);
         setLinLogMode(false);
         setAdjustSizes(false);
+		setDisableString(false);
         setEdgeWeightInfluence(1.);
 
         // Performance
@@ -559,9 +575,17 @@ public class ForceAtlas2 implements Layout {
     public Boolean isAdjustSizes() {
         return adjustSizes;
     }
+	
+	public Boolean isDisableString() {
+        return disableString;
+    }
 
     public void setAdjustSizes(Boolean adjustSizes) {
         this.adjustSizes = adjustSizes;
+    }
+	
+	public void setDisableString(Boolean disableString) {
+        this.disableString = disableString;
     }
 
     public Boolean isBarnesHutOptimize() {

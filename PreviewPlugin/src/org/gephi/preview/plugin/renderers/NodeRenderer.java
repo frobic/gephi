@@ -106,21 +106,18 @@ public class NodeRenderer implements Renderer , Renderer.NamedRenderer {
 
 //        x = x - size;
 //        y = y - size;
-        if (borderSize > 0) {
-            graphics.stroke(borderColor.getRed(), borderColor.getGreen(), borderColor.getBlue(), alpha);
-            graphics.strokeWeight(borderSize);
-        } else {
-            graphics.noStroke();
-        }
-		graphics.noStroke();
+
 		for (int i = 0 ; i < nbcolors ; i++) {
-			if (nbcolors == i+1) {
+			if (nbcolors == 0) {
 				if (borderSize > 0) {
 					graphics.stroke(borderColor.getRed(), borderColor.getGreen(), borderColor.getBlue(), alpha);
 					graphics.strokeWeight(borderSize);
 				} else {
 					graphics.noStroke();
 				}
+			}
+			if (nbcolors == 1) {
+				graphics.noStroke();
 			}
 			graphics.fill(colors[i].getRed(), colors[i].getGreen(), colors[i].getBlue(), alpha);
 			graphics.ellipse(x, y, (nbcolors-i)*size/nbcolors, (nbcolors-i	)*size/nbcolors);
@@ -135,6 +132,8 @@ public class NodeRenderer implements Renderer , Renderer.NamedRenderer {
         Float size = item.getData(NodeItem.SIZE);
         size /= 2f;
         Color color = item.getData(NodeItem.COLOR);
+		Integer nbcolors = item.getData(NodeItem.NBCOLOR);
+		Color[] colors = item.getData(NodeItem.COLORS);
         Color borderColor = ((DependantColor) properties.getValue(PreviewProperty.NODE_BORDER_COLOR)).getColor(color);
         float borderSize = properties.getFloatValue(PreviewProperty.NODE_BORDER_WIDTH);
         float alpha = properties.getIntValue(PreviewProperty.NODE_OPACITY) / 100f;
@@ -163,6 +162,8 @@ public class NodeRenderer implements Renderer , Renderer.NamedRenderer {
         Float size = item.getData(NodeItem.SIZE);
         size /= 2f;
         Color color = item.getData(NodeItem.COLOR);
+		Integer nbcolors = item.getData(NodeItem.NBCOLOR);
+		Color[] colors = item.getData(NodeItem.COLORS);
         Color borderColor = ((DependantColor) properties.getValue(PreviewProperty.NODE_BORDER_COLOR)).getColor(color);
         float borderSize = properties.getFloatValue(PreviewProperty.NODE_BORDER_WIDTH);
         float alpha = properties.getIntValue(PreviewProperty.NODE_OPACITY) / 100f;
@@ -178,12 +179,15 @@ public class NodeRenderer implements Renderer , Renderer.NamedRenderer {
             gState.setStrokeOpacity(alpha);
             cb.setGState(gState);
         }
-        cb.circle(x, -y, size);
-        if (borderSize > 0) {
-            cb.fillStroke();
-        } else {
-            cb.fill();
-        }
+		for (int i = 0 ; i < nbcolors ; i++) {
+			cb.setRGBColorFill(colors[i].getRed(), colors[i].getGreen(), colors[i].getBlue());
+			cb.circle(x, -y, (nbcolors-i)*size/nbcolors);
+			if (borderSize > 0 && i == 0) {
+				cb.fillStroke();
+			} else {
+				cb.fill();
+			}
+		}
         if (alpha < 1f) {
             cb.restoreState();
         }

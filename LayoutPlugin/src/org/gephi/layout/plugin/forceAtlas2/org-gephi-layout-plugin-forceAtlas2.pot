@@ -76,6 +76,13 @@ msgid "ForceAtlas2.adjustSizes.desc"
 msgstr ""
 "Use only when spatialized. Should not be used with \"Approximate Repulsion\""
 
+msgid "ForceAtlas2.disableString.name"
+msgstr "Disable Strings"
+
+msgid "ForceAtlas2.disableString.desc"
+msgstr ""
+"Use only when spatialized. Should not be used with \"Approximate Repulsion\""
+
 msgid "ForceAtlas2.jitterTolerance.name"
 msgstr "Tolerance (speed)"
 
