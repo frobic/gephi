@@ -116,7 +116,6 @@ public class Florent implements Layout {
 
         graph = graphModel.getHierarchicalGraphVisible();
         this.timeInterval = DynamicUtilities.getVisibleInterval(dynamicModel);	
-        graph.readLock();
 		
         Node[] nodes = graph.getNodes().toArray();
 		Edge[] edges = graph.getEdgesAndMetaEdges().toArray();
@@ -179,7 +178,6 @@ public class Florent implements Layout {
 		if (Florent_First) {
 			
 			Florent_First = false ;
-			graph.readUnlock();
 			for (int i = 0 ; i < NbCommunautes ; i++) {
 				Node test = graphModel.factory().newNode("Comm"+i) ;
 				test.getNodeData().setLabel("Florent_Virtual_Node");
@@ -231,7 +229,6 @@ public class Florent implements Layout {
 				}
 			}
 			
-			graph.readLock();
 			
 			
 		}
@@ -255,7 +252,6 @@ public class Florent implements Layout {
         graph = graphModel.getHierarchicalGraphVisible();
         this.timeInterval = DynamicUtilities.getVisibleInterval(dynamicModel);
 			
-		graph.readLock();
 
         Node[] nodes = graph.getNodes().toArray();
         Edge[] edges = graph.getEdgesAndMetaEdges().toArray();
@@ -356,6 +352,9 @@ public class Florent implements Layout {
 						coeff = coeff/getWeight(e) ;
 						if (coeff > 100) {
 							coeff = 100+Math.sqrt(coeff-100) ;
+							if (coeff > 200) {
+								coeff = 200 ;
+							}
 						}
 						if (isDisableString()) {
 							
@@ -437,7 +436,6 @@ public class Florent implements Layout {
                 }
             }
         }
-		graph.readUnlockAll();
     }
 
     @Override
@@ -462,7 +460,6 @@ public class Florent implements Layout {
 		}
 		
 		pool.shutdown();
-		//graph.readUnlockAll() ;
 
 
     }
@@ -801,7 +798,6 @@ public class Florent implements Layout {
 		else {
 			isolation = 0.0 ;
 		}
-		//graph.readUnlock();
 		return density*isolation ;
 		
 	}

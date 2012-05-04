@@ -191,15 +191,30 @@ public class NodeBuilder implements ItemBuilder {
 		double[] Baryz = new double[NbCommunautes+1];
 		int[] CommSize = new int[NbCommunautes+1];
 		ArrayList<ArrayList<Integer>> Communities = new ArrayList<ArrayList<Integer>>();
+		ArrayList<ArrayList<Integer>> CommGraph = new ArrayList<ArrayList<Integer>>();
 		
 		for (int _i = 0 ; _i <= NbCommunautes ; _i++) {
 			Communities.add(new ArrayList<Integer>()) ;
+			CommGraph.add(new ArrayList<Integer>()) ;
 			Baryx[_i] = 0.0f ;
 			Baryy[_i] = 0.0f ;
 			Baryz[_i] = 0.0f ;
 			CommSize[_i] = 0 ;
 		}
 		int i_n = 0 ;
+		
+		int K =(int) Math.ceil(Math.pow(NbCommunautes+5,1./3.)) ;
+		ArrayList<Double[]> StockCouleur = new ArrayList<Double[]>() ;
+		ArrayList<Double[]> CommCouleurRYB = new ArrayList<Double[]>() ;
+		for (int i = 0 ; i < K ; i++) {
+			for (int i2 = 0 ; i2 < K ; i2++) {
+				for (int i3 = 0 ; i3 < K ; i3++) {
+					Double[] couleur = {((double)i/(double)K),((double)i2/(double)K),((double)i3/(double)K)} ; 
+					StockCouleur.add(couleur) ;
+				}
+			}
+		}
+		
 		
 		for (Node n : graph.getNodes()) {
 			if (n.getNodeData().getAttributes().getValue("Comm") != null) {
@@ -218,12 +233,74 @@ public class NodeBuilder implements ItemBuilder {
 		
 		Node[] nodes = graph.getNodes().toArray();
 		
-		/*System.err.println(nodes.length);
+		for (int i = 0 ; i <= NbCommunautes ; i++) {
+			CommCouleurRYB.add(StockCouleur.get(0)) ;
+		}
 		
-        for (Node n : graph.getNodes()) {
-            System.err.println(n.getNodeData().x());
-            System.err.println(-n.getNodeData().y());
-		}*/
+		StockCouleur.remove(0) ;
+		
+		for (int i = 0 ; i <= NbCommunautes ; i++) {
+			
+			ArrayList<Double[]> BeFarTo = new ArrayList<Double[]>() ;
+			BeFarTo.add(CommCouleurRYB.get(i)) ;
+			
+			for (int j = 0 ; j < Communities.get(i).size() ; j++) {
+				Node n = nodes[Communities.get(i).get(j)] ;
+				if (n.getNodeData().getAttributes().getValue("Comm") != null) {
+					StringList temp = (StringList) n.getNodeData().getAttributes().getValue("Comm") ;
+					for (int _i = 0 ; _i < temp.size() ; _i++) {
+						
+						int c = Integer.parseInt(temp.getItem(_i)) ;
+						
+						boolean addthis = true ;
+						
+						for (int ii = 0 ; ii < BeFarTo.size() ; ii++) {
+							if (java.util.Arrays.equals(CommCouleurRYB.get(c),BeFarTo.get(ii))) {
+								addthis = false ;
+							}
+						}
+						
+						if (addthis) {
+							BeFarTo.add(CommCouleurRYB.get(c)) ;
+						}
+						
+					}
+				}
+			}
+			
+			
+			int best = 0 ;
+			Double[] CouleurVue = StockCouleur.get(0) ;
+			double bestc ;
+			double courant = 0. ;
+			
+			for (int ii = 0 ; ii < BeFarTo.size() ; ii++) {
+				Double[] temp = BeFarTo.get(ii) ;
+				courant = courant + (CouleurVue[0]-temp[0])*(CouleurVue[0]-temp[0])+ (CouleurVue[1]-temp[1])*(CouleurVue[1]-temp[1])+ (CouleurVue[2]-temp[2])*(CouleurVue[2]-temp[2]) ;
+			}
+			
+			bestc = courant ;
+			
+			for (int j = 1 ; j < StockCouleur.size() ; j++) {
+				courant = 0. ;
+				CouleurVue = StockCouleur.get(j) ;
+				for (int ii = 0 ; ii < BeFarTo.size() ; ii++) {
+					Double[] temp = BeFarTo.get(ii) ;
+					courant = courant + (CouleurVue[0]-temp[0])*(CouleurVue[0]-temp[0])+ (CouleurVue[1]-temp[1])*(CouleurVue[1]-temp[1])+ (CouleurVue[2]-temp[2])*(CouleurVue[2]-temp[2]) ;
+				}
+				if (courant > bestc) {
+					best = j ;
+					bestc = courant ;
+				}
+			}
+			
+			CommCouleurRYB.remove(i) ;
+			CommCouleurRYB.add(i,StockCouleur.get(best)) ;
+			StockCouleur.remove(best) ;
+			
+		}
+		
+		
 		
 		int first ;
 		
@@ -391,7 +468,13 @@ public class NodeBuilder implements ItemBuilder {
 				if (_i == 0 && j != 0) {
 					//nodeItem.setData(NodeItem.ANGLE,(float)(Angles[select]-(Math.PI/(double) j))) ;
 				}
-				colortab[_i] = new Color(Rouge[Communautes[select]%100],Vert[Communautes[select]%100],Bleu[Communautes[select]%100],255) ;
+				Double[] Couleur = CommCouleurRYB.get(Communautes[select]) ;
+				colortab[_i] = new Color((int)Math.floor(255*RYBToR(Couleur[0],Couleur[1],Couleur[2])),(int)Math.floor(255*RYBToG(Couleur[0],Couleur[1],Couleur[2])),(int)Math.floor(255*RYBToB(Couleur[0],Couleur[1],Couleur[2])),255) ;
+				
+				//System.err.println(Couleur[0]+" "+Couleur[1]+" "+Couleur[2]) ;
+				
+				//colortab[_i] = new Color(Rouge[Communautes[select]%100],Vert[Communautes[select]%100],Bleu[Communautes[select]%100],255) ;
+
 				bool[select] = 0 ;
 				ord[_i] = select ;
 			}
@@ -444,4 +527,15 @@ public class NodeBuilder implements ItemBuilder {
     public String getType() {
         return ItemBuilder.NODE_BUILDER;
     }
+	
+	public double RYBToR(double r, double y, double b) {
+		return 1 * (1 - r) * (1 - b) * (1 - y) + 1 * r * (1 - b) * (1 - y) + 0.163 * (1 - r) * b * (1 - y) + 0.5 * r * b * (1 - y) + 1 * (1 - r) * (1 - b) * y + 1 * r * (1 - b) * y + 0 * (1 - r) * b * y + 0.2 * r * b * y ;
+    }
+	public double RYBToG(double r, double y, double b) {
+		return 1 * (1 - r) * (1 - b) * (1 - y) + 0 * r * (1 - b) * (1 - y) + 0.373 * (1 - r) * b * (1 - y) + 0 * r * b * (1 - y) + 1 * (1 - r) * (1 - b) * y + 0.5 * r * (1 - b) * y + 0.66 * (1 - r) * b * y + 0.094 * r * b * y ;
+    }
+	public double RYBToB(double r, double y, double b) {
+		return 1 * (1 - r) * (1 - b) * (1 - y) + 0 * r * (1 - b) * (1 - y) + 0.6 * (1 - r) * b * (1 - y) + 0.5 * r * b * (1 - y) + 0 * (1 - r) * (1 - b) * y + 0 * r * (1 - b) * y + 0.2 * (1 - r) * b * y + 0 * r * b * y ;
+    }
+	
 }
