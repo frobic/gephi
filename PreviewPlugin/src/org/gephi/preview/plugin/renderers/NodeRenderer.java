@@ -180,7 +180,6 @@ public class NodeRenderer implements Renderer , Renderer.NamedRenderer {
         }
 		for (int i = 0 ; i < nbcolors ; i++) {
 			cb.setRGBColorFill(colors[nbcolors-i-1].getRed(), colors[nbcolors-i-1].getGreen(), colors[nbcolors-i-1].getBlue());
-			//cb.circle(x, -y, (nbcolors-i)*size/nbcolors);
 			if (size >= 0.5) {
 				cb.newPath() ;
 				ArrayList ar = cb.bezierArc(x-size,-y+size,x+size,0-size-y,360f*(nbcolors-i-1)/nbcolors+(360f/6.28f)*angle,360f*(1)/nbcolors);
@@ -200,6 +199,11 @@ public class NodeRenderer implements Renderer , Renderer.NamedRenderer {
 			} else {
 				cb.fill();
 			}
+				
+				if (borderSize > 0) {
+					cb.circle(x, -y, size);
+					cb.stroke();
+				}
 			}
 		}
         if (alpha < 1f) {
