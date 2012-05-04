@@ -1,0 +1,119 @@
+# Translation file for Gephi.
+# Copyright (C) 2011 Gephi contributors.
+# This file is distributed under the same license as the Gephi package.
+# Gephi Team <gephi.team@lists.launchpad.net>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Gephi 0.8\n"
+"Report-Msgid-Bugs-To: gephi.team@lists.launchpad.net\n"
+"POT-Creation-Date: 2011-08-05 14:52+0200\n"
+"PO-Revision-Date: 2011-08-05 14:52+0200\n"
+"Last-Translator: Mathieu Bastian <gephi.team@lists.launchpad.net>\n"
+"Language-Team: English <https://launchpad.net/~gephi.team>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Florent.name"
+msgstr "ForceAtlas 2"
+
+msgid "Florent.description"
+msgstr ""
+"Quality layout: a linear-attraction linear-repulsion model with few "
+"approximations (BarnesHut). Speed automatically computed."
+
+msgid "Florent.tuning"
+msgstr "Tuning"
+
+msgid "Florent.behavior"
+msgstr "Behavior Alternatives"
+
+msgid "Florent.performance"
+msgstr "Performance"
+
+msgid "Florent.threads"
+msgstr "Threads"
+
+msgid "Florent.scalingRatio.name"
+msgstr "Scaling"
+
+msgid "Florent.scalingRatio.desc"
+msgstr "How much repulsion you want. More makes a more sparse graph."
+
+msgid "Florent.gravity.name"
+msgstr "Gravity"
+
+msgid "Florent.gravity.desc"
+msgstr "Attracts nodes to the center. Prevents islands from drifting away."
+
+msgid "Florent.strongGravityMode.name"
+msgstr "Stronger Gravity"
+
+msgid "Florent.strongGravityMode.desc"
+msgstr "A stronger gravity law"
+
+msgid "Florent.distributedAttraction.name"
+msgstr "Dissuade Hubs"
+
+msgid "Florent.distributedAttraction.desc"
+msgstr ""
+"Distributes attraction along outbound edges. Hubs attract less and thus are "
+"pushed to the borders."
+
+msgid "Florent.linLogMode.name"
+msgstr "LinLog mode"
+
+msgid "Florent.linLogMode.desc"
+msgstr ""
+"Switch ForceAtlas' model from lin-lin to lin-log (tribute to Andreas Noack). "
+"Makes clusters more tight."
+
+msgid "Florent.adjustSizes.name"
+msgstr "Prevent Overlap"
+
+msgid "Florent.adjustSizes.desc"
+msgstr ""
+"Use only when spatialized. Should not be used with \"Approximate Repulsion\""
+
+msgid "Florent.disableString.name"
+msgstr "Disable Strings"
+
+msgid "Florent.disableString.desc"
+msgstr ""
+"Use only when spatialized. Should not be used with \"Approximate Repulsion\""
+
+msgid "Florent.jitterTolerance.name"
+msgstr "Tolerance (speed)"
+
+msgid "Florent.jitterTolerance.desc"
+msgstr ""
+"How much swinging you allow. Above 1 discouraged. Lower gives less speed and "
+"more precision."
+
+msgid "Florent.barnesHutOptimization.name"
+msgstr "Approximate Repulsion"
+
+msgid "Florent.barnesHutOptimization.desc"
+msgstr ""
+"Barnes Hut optimization: n complexity to n.ln(n) ; allows larger graphs."
+
+msgid "Florent.barnesHutTheta.name"
+msgstr "Approximation"
+
+msgid "Florent.barnesHutTheta.desc"
+msgstr "Theta of the Barnes Hut optimization."
+
+msgid "Florent.edgeWeightInfluence.name"
+msgstr "Edge Weight Influence"
+
+msgid "Florent.edgeWeightInfluence.desc"
+msgstr ""
+"How much influence you give to the edges weight. 0 is \"no influence\" and 1 "
+"is \"normal\"."
+
+msgid "Florent.threads.name"
+msgstr "Threads number"
+
+msgid "Florent.threads.desc"
+msgstr "More threads means more speed if your cores can handle it."

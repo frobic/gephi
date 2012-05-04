@@ -1,0 +1,124 @@
+# Translation file for Gephi.
+# Copyright (C) 2011 Gephi contributors.
+# This file is distributed under the same license as the Gephi package.
+# 
+# Translators:
+# Célio CJr <celiofariajr@gmail.com>, 2011.
+# Célio Faria Jr. <celiofariajr@gmail.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: Gephi\n"
+"Report-Msgid-Bugs-To: https://bugs.launchpad.net/gephi\n"
+"POT-Creation-Date: 2011-08-05 14:52+0200\n"
+"PO-Revision-Date: 2011-09-22 12:08+0000\n"
+"Last-Translator: celiofariajr <celiofariajr@gmail.com>\n"
+"Language-Team: Portuguese (Brazilian) (http://www.transifex.net/projects/p/gephi/team/pt_BR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+
+msgid "Florent.name"
+msgstr "Florent"
+
+msgid "Florent.description"
+msgstr ""
+"Disposição por qualidade: um modelo de atração linear e repulsão linear com "
+"poucas aproximações (BarnesHut). Velocidade calculada automaticamente."
+
+msgid "Florent.tuning"
+msgstr "Afinação"
+
+msgid "Florent.behavior"
+msgstr "Alternativas de comportamento"
+
+msgid "Florent.performance"
+msgstr "Desempenho"
+
+msgid "Florent.threads"
+msgstr "Threads"
+
+msgid "Florent.scalingRatio.name"
+msgstr "Dimensionamento"
+
+msgid "Florent.scalingRatio.desc"
+msgstr ""
+"Quanta repulsão você deseja. Valores maiores resultam em grafos mais "
+"dispersos."
+
+msgid "Florent.gravity.name"
+msgstr "Gravidade"
+
+msgid "Florent.gravity.desc"
+msgstr "Atrai os nós para o centro. Previne que as ilhas se afastem."
+
+msgid "Florent.strongGravityMode.name"
+msgstr "Gravidade mais forte"
+
+msgid "Florent.strongGravityMode.desc"
+msgstr "Uma lei de gravidade mais forte"
+
+msgid "Florent.distributedAttraction.name"
+msgstr "Dissuadir hubs"
+
+msgid "Florent.distributedAttraction.desc"
+msgstr ""
+"Distribui a atração ao longo das arestas de saída. Hubs atraem menos e são, "
+"portanto, empurrados para as bordas."
+
+msgid "Florent.linLogMode.name"
+msgstr "Modo LinLog"
+
+msgid "Florent.linLogMode.desc"
+msgstr ""
+"Alternar o modelo ForceAtlas entre lin-lin e lin-log (homenagem a Andreas "
+"Noack). Torna os clusters mais apertado."
+
+msgid "Florent.adjustSizes.name"
+msgstr "Evitar sobreposição"
+
+msgid "Florent.adjustSizes.desc"
+msgstr ""
+"Usar apenas quando já está distribuído. Não deve ser usado juntamente com a "
+"opção \"Aproximar repulsão\""
+
+msgid "Florent.jitterTolerance.name"
+msgstr "Tolerância (velocidade)"
+
+msgid "Florent.jitterTolerance.desc"
+msgstr ""
+"Quanto balanço será permitido. Valores acima de 1 são desaconselhados. "
+"Valores menores resultam em menos velocidade e mais precisão."
+
+msgid "Florent.barnesHutOptimization.name"
+msgstr "Aproximar repulsão"
+
+msgid "Florent.barnesHutOptimization.desc"
+msgstr ""
+"Otimização de Barnes Hut: complexidade entre n e n.ln(n) ; permite grafos "
+"maiores."
+
+msgid "Florent.barnesHutTheta.name"
+msgstr "Aproximação"
+
+msgid "Florent.barnesHutTheta.desc"
+msgstr "Valor Theta da otimização de Barnes Hut."
+
+msgid "Florent.edgeWeightInfluence.name"
+msgstr "Influência do peso das arestas"
+
+msgid "Florent.edgeWeightInfluence.desc"
+msgstr ""
+"Quanto o peso das arestas deve influenciar a disposição. 0 significa "
+"\"nenhuma influência\" e 1 é \"influência normal\"."
+
+msgid "Florent.threads.name"
+msgstr "Número de threads"
+
+msgid "Florent.threads.desc"
+msgstr ""
+"Mais threads obtém mais velocidade, se os núcleos do seu processador puderem"
+" suportar."
+
+

@@ -1,0 +1,122 @@
+# Translation file for Gephi.
+# Copyright (C) 2011 Gephi contributors.
+# This file is distributed under the same license as the Gephi package.
+# 
+# Translators:
+# Eduardo Ramos <eduramiba@gmail.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: Gephi\n"
+"Report-Msgid-Bugs-To: https://bugs.launchpad.net/gephi\n"
+"POT-Creation-Date: 2011-08-05 14:52+0200\n"
+"PO-Revision-Date: 2011-09-22 21:42+0000\n"
+"Last-Translator: eduramiba <eduramiba@gmail.com>\n"
+"Language-Team: Spanish (Castilian) (http://www.transifex.net/projects/p/gephi/team/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgid "Florent.name"
+msgstr "ForceAtlas 2"
+
+msgid "Florent.description"
+msgstr ""
+"Distribución de calidad: un modelo de atracción lineal y repulsión lineal "
+"con unas pocas aproximaciones (BarnesHut). Velocidad calculada "
+"automáticamente."
+
+msgid "Florent.tuning"
+msgstr "Puesta a punto"
+
+msgid "Florent.behavior"
+msgstr "Alternativas de comportamiento"
+
+msgid "Florent.performance"
+msgstr "Rendimiento"
+
+msgid "Florent.threads"
+msgstr "Hilos"
+
+msgid "Florent.scalingRatio.name"
+msgstr "Escalado"
+
+msgid "Florent.scalingRatio.desc"
+msgstr ""
+"La cantidad de repulsión deseada. Valores mayores hacen grafos más "
+"dispersos."
+
+msgid "Florent.gravity.name"
+msgstr "Gravedad"
+
+msgid "Florent.gravity.desc"
+msgstr "Atrae los nodos al centro. Previene que las islas se alejen."
+
+msgid "Florent.strongGravityMode.name"
+msgstr "Gravedad más fuerte"
+
+msgid "Florent.strongGravityMode.desc"
+msgstr "Una ley de la gravedad más fuerte"
+
+msgid "Florent.distributedAttraction.name"
+msgstr "Disuadir Hubs"
+
+msgid "Florent.distributedAttraction.desc"
+msgstr ""
+"Distribuye la atracción a traves de las aristas salientes. Los Hubs atraen "
+"menos y por lo tanto son empujados a los bordes."
+
+msgid "Florent.linLogMode.name"
+msgstr "Modo LinLog"
+
+msgid "Florent.linLogMode.desc"
+msgstr ""
+"Cambiar el modelo de ForceAtlas de lin-lin a lin-log (tributo a Andreas "
+"Noack). Hace a los clusters más tensos."
+
+msgid "Florent.adjustSizes.name"
+msgstr "Evitar el solapamiento"
+
+msgid "Florent.adjustSizes.desc"
+msgstr ""
+"Utilizar sólo cuando ya está distribuido. No se debe utilizar con "
+"\"Aproximar Repulsión\""
+
+msgid "Florent.jitterTolerance.name"
+msgstr "Tolerancia (velocidad)"
+
+msgid "Florent.jitterTolerance.desc"
+msgstr ""
+"Cuánto balanceo permitir. Valores por encima de 1 desaconsejados. Valores "
+"menores dan menos velocidad y mayor precisión."
+
+msgid "Florent.barnesHutOptimization.name"
+msgstr "Aproximar Repulsión"
+
+msgid "Florent.barnesHutOptimization.desc"
+msgstr ""
+"Optimización Barnes Hut: complejidad n a complejidad n.ln(n) ; permite "
+"grafos mayores."
+
+msgid "Florent.barnesHutTheta.name"
+msgstr "Aproximación"
+
+msgid "Florent.barnesHutTheta.desc"
+msgstr "Valor Theta de la optimización Barnes Hut."
+
+msgid "Florent.edgeWeightInfluence.name"
+msgstr "Influencia del peso de las aristas"
+
+msgid "Florent.edgeWeightInfluence.desc"
+msgstr ""
+"Cúanta influencia dar al peso de las aristas. 0 es \"ninguna influencia\" y "
+"1 es \"normal\"."
+
+msgid "Florent.threads.name"
+msgstr "Número de hilos"
+
+msgid "Florent.threads.desc"
+msgstr "Más hilos significa más velocidad si tu procesador puede manejarlos."
+
+
