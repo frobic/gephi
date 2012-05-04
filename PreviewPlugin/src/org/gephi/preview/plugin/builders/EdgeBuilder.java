@@ -47,6 +47,7 @@ import org.gephi.data.attributes.type.TimeInterval;
 import org.gephi.dynamic.DynamicUtilities;
 import org.gephi.dynamic.api.DynamicController;
 import org.gephi.graph.api.Edge;
+import org.gephi.graph.api.EdgeData;
 import org.gephi.graph.api.Graph;
 import org.gephi.graph.api.HierarchicalDirectedGraph;
 import org.gephi.graph.api.HierarchicalGraph;
@@ -81,18 +82,37 @@ public class EdgeBuilder implements ItemBuilder {
         int i = 0;
         for (Edge e : hgraph.getEdgesAndMetaEdges()) {
             EdgeItem item = new EdgeItem(e);
-            item.setData(EdgeItem.WEIGHT, e.getWeight(timeInterval.getLow(), timeInterval.getHigh()));
+			String verif = "ficelle" ;
+			EdgeData ed = e.getEdgeData() ;
+			String edLab = ed.getLabel() ;
+			if (verif.equals(edLab)) {
+				item.setData(EdgeItem.WEIGHT, 0.01f);
+			}
+			else {
+				item.setData(EdgeItem.WEIGHT, e.getWeight(timeInterval.getLow(), timeInterval.getHigh()));
+			}
             item.setData(EdgeItem.DIRECTED, e.isDirected());
             if (graph instanceof HierarchicalDirectedGraph) {
                 item.setData(EdgeItem.MUTUAL, graph.getEdge(e.getTarget(), e.getSource()) != null);
             }
             item.setData(EdgeItem.SELF_LOOP, e.isSelfLoop());
             item.setData(EdgeItem.META_EDGE, e instanceof MetaEdge);
+			
+
+			if (verif.equals(edLab)) {
+				item.setData(EdgeItem.COLOR, new Color((int) (e.getEdgeData().r() * 255f),
+																						  (int) (e.getEdgeData().g() * 255f),
+																						  (int) (e.getEdgeData().b() * 255f),
+																						  (int) (0f)));	
+			}
+			else {
             item.setData(EdgeItem.COLOR, e.getEdgeData().r() == -1 ? null : new Color((int) (e.getEdgeData().r() * 255f),
-                    (int) (e.getEdgeData().g() * 255f),
-                    (int) (e.getEdgeData().b() * 255f),
-                    (int) (e.getEdgeData().alpha() * 255f)));
+																					  (int) (e.getEdgeData().g() * 255f),
+																					  (int) (e.getEdgeData().b() * 255f),
+																					  (int) (e.getEdgeData().alpha() * 255f)));
+			}
             items[i++] = item;
+			
         }
         return items;
     }

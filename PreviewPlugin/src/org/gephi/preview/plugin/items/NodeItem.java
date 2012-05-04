@@ -57,6 +57,8 @@ public class NodeItem extends AbstractItem {
     public static final String COLOR = "color";
 	public static final String COLORS = "colors";
 	public static final String NBCOLOR = "nbcolor";
+	public static final String ANGLE = "angle";
+
     
     public NodeItem(Node source) {
         super(source, Item.NODE);

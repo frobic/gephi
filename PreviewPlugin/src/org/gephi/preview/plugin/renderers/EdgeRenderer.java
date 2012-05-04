@@ -185,9 +185,9 @@ public class EdgeRenderer implements Renderer, Renderer.NamedRenderer {
 
         if (sourceItem == targetItem) {
             renderSelfLoop(sourceItem, weight, color, properties, target);
-        } else if (properties.getBooleanValue(PreviewProperty.EDGE_CURVED)) {
+        } else if (properties.getBooleanValue(PreviewProperty.EDGE_CURVED) && weight >= 0.1) {
             renderCurvedEdge(item, sourceItem, targetItem, weight, color, properties, target);
-        } else {
+        } else if (weight >= 0.1) {
             renderStraightEdge(item, sourceItem, targetItem, weight, color, properties, target);
         }
     }

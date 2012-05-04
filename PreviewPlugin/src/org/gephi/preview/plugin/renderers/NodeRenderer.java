@@ -60,6 +60,7 @@ import org.openide.util.NbBundle;
 import org.openide.util.lookup.ServiceProvider;
 import org.w3c.dom.Element;
 import processing.core.PGraphics;
+import java.util.ArrayList ;
 
 /**
  *
@@ -90,6 +91,7 @@ public class NodeRenderer implements Renderer , Renderer.NamedRenderer {
         //Params
         Float x = item.getData(NodeItem.X);
         Float y = item.getData(NodeItem.Y);
+		Float angle = item.getData(NodeItem.ANGLE) ;
         Float size = item.getData(NodeItem.SIZE);
         Color color = item.getData(NodeItem.COLOR);
 		Integer nbcolors = item.getData(NodeItem.NBCOLOR);
@@ -103,25 +105,21 @@ public class NodeRenderer implements Renderer , Renderer.NamedRenderer {
 
         //Graphics
         PGraphics graphics = target.getGraphics();
-
-//        x = x - size;
-//        y = y - size;
+		
+		if (borderSize > 0) {
+			graphics.stroke(borderColor.getRed(), borderColor.getGreen(), borderColor.getBlue(), alpha);
+			graphics.strokeWeight(borderSize);
+		} else {
+			graphics.noStroke();
+		}
 
 		for (int i = 0 ; i < nbcolors ; i++) {
-			if (nbcolors == 0) {
-				if (borderSize > 0) {
-					graphics.stroke(borderColor.getRed(), borderColor.getGreen(), borderColor.getBlue(), alpha);
-					graphics.strokeWeight(borderSize);
-				} else {
-					graphics.noStroke();
-				}
-			}
-			if (nbcolors == 1) {
-				graphics.noStroke();
-			}
 			graphics.fill(colors[i].getRed(), colors[i].getGreen(), colors[i].getBlue(), alpha);
-			graphics.ellipse(x, y, (nbcolors-i)*size/nbcolors, (nbcolors-i	)*size/nbcolors);
+			if (size >= 0.5) {
+				graphics.arc(x,y,size,size,6.2832f*(nbcolors-i-1)/nbcolors-angle,6.2832f*(nbcolors-i)/nbcolors-angle) ;
+			}
 		}
+		
     }
 
     public void renderSVG(Item item, SVGTarget target, PreviewProperties properties) {
@@ -160,6 +158,7 @@ public class NodeRenderer implements Renderer , Renderer.NamedRenderer {
         Float x = item.getData(NodeItem.X);
         Float y = item.getData(NodeItem.Y);
         Float size = item.getData(NodeItem.SIZE);
+		Float angle = item.getData(NodeItem.ANGLE) ;
         size /= 2f;
         Color color = item.getData(NodeItem.COLOR);
 		Integer nbcolors = item.getData(NodeItem.NBCOLOR);
@@ -180,12 +179,27 @@ public class NodeRenderer implements Renderer , Renderer.NamedRenderer {
             cb.setGState(gState);
         }
 		for (int i = 0 ; i < nbcolors ; i++) {
-			cb.setRGBColorFill(colors[i].getRed(), colors[i].getGreen(), colors[i].getBlue());
-			cb.circle(x, -y, (nbcolors-i)*size/nbcolors);
-			if (borderSize > 0 && i == 0) {
-				cb.fillStroke();
+			cb.setRGBColorFill(colors[nbcolors-i-1].getRed(), colors[nbcolors-i-1].getGreen(), colors[nbcolors-i-1].getBlue());
+			//cb.circle(x, -y, (nbcolors-i)*size/nbcolors);
+			if (size >= 0.5) {
+				cb.newPath() ;
+				ArrayList ar = cb.bezierArc(x-size,-y+size,x+size,0-size-y,360f*(nbcolors-i-1)/nbcolors+(360f/6.28f)*angle,360f*(1)/nbcolors);
+				//cb.arc(x-size,-y+size,x+size,0-size-y,360f*(nbcolors-i-1)/nbcolors+angle,360f*(1)/nbcolors) ;
+				cb.moveTo(x,-y) ;
+				float pt[] = (float [])ar.get(0);
+				cb.moveTo(pt[0], pt[1]);
+				for (int k = 0; k < ar.size(); ++k) {
+					pt = (float [])ar.get(k);
+					cb.curveTo(pt[2], pt[3], pt[4], pt[5], pt[6], pt[7]);
+				}
+				cb.lineTo(x, -y);
+				//strokeAndFill();
+				//				cb.ClosePathFillStroke();
+			if (borderSize > 0) {
+				cb.fill();
 			} else {
 				cb.fill();
+			}
 			}
 		}
         if (alpha < 1f) {
@@ -219,4 +233,5 @@ public class NodeRenderer implements Renderer , Renderer.NamedRenderer {
     public String getName() {
         return NbBundle.getMessage(NodeRenderer.class, "NodeRenderer.name");
     }
+	
 }
