@@ -339,7 +339,7 @@ public class Florent implements Layout {
 				String edLab = ed.getLabel() ;
 				double adjsize = getfactorf() ;
 				if (isAdjustSizes()) {
-					adjsize = 1.4*adjsize ;
+					adjsize = adjsize ;
 				}
 				if (verif.equals(edLab)) {
 					Node n = e.getSource() ;
@@ -351,10 +351,10 @@ public class Florent implements Layout {
 					if ((nData.x()-nData2.x())*(nData.x()-nData2.x()) + (nData.y()-nData2.y())*(nData.y()-nData2.y()) > getWeight(e)*getWeight(e)*adjsize*adjsize) {
 						double coeff = Math.sqrt((nData.x()-nData2.x())*(nData.x()-nData2.x()) + (nData.y()-nData2.y())*(nData.y()-nData2.y())) - getWeight(e)*adjsize ;
 						coeff = coeff/getWeight(e) ;
-						if (coeff > 50) {
-							coeff = 50+Math.sqrt(coeff-50) ;
-							if (coeff > 100) {
-								coeff = 100 ;
+						if (coeff > 75) {
+							coeff = 75+Math.sqrt(coeff-75) ;
+							if (coeff > 75) {
+								coeff = 75 ;
 							}
 						}
 						if (isDisableString()) {
