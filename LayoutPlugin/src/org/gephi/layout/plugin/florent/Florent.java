@@ -332,14 +332,14 @@ public class Florent implements Layout {
             for (Edge e : edges) {
                 Attraction.apply(e.getSource(), e.getTarget(), 1);
             }
-        } else if (getEdgeWeightInfluence() == 1) {
+        } else {
             for (Edge e : edges) {
 				String verif = "ficelle" ;
 				EdgeData ed = e.getEdgeData() ;
 				String edLab = ed.getLabel() ;
 				double adjsize = getfactorf() ;
 				if (isAdjustSizes()) {
-					adjsize = 2.*adjsize ;
+					adjsize = 1.4*adjsize ;
 				}
 				if (verif.equals(edLab)) {
 					Node n = e.getSource() ;
@@ -348,13 +348,13 @@ public class Florent implements Layout {
 					FlorentLayoutData nLayout = nData.getLayoutData();
 					NodeData nData2 = n2.getNodeData();
 					FlorentLayoutData nLayout2 = nData2.getLayoutData();
-					if ((nData.x()-nData2.x())*(nData.x()-nData2.x()) + (nData.y()-nData2.y())*(nData.y()-nData2.y()) > getWeight(e)*getWeight(e)*adjsize) {
+					if ((nData.x()-nData2.x())*(nData.x()-nData2.x()) + (nData.y()-nData2.y())*(nData.y()-nData2.y()) > getWeight(e)*getWeight(e)*adjsize*adjsize) {
 						double coeff = Math.sqrt((nData.x()-nData2.x())*(nData.x()-nData2.x()) + (nData.y()-nData2.y())*(nData.y()-nData2.y())) - getWeight(e)*adjsize ;
 						coeff = coeff/getWeight(e) ;
-						if (coeff > 100) {
-							coeff = 100+Math.sqrt(coeff-100) ;
-							if (coeff > 200) {
-								coeff = 200 ;
+						if (coeff > 50) {
+							coeff = 50+Math.sqrt(coeff-50) ;
+							if (coeff > 100) {
+								coeff = 100 ;
 							}
 						}
 						if (isDisableString()) {
@@ -371,12 +371,13 @@ public class Florent implements Layout {
 					}
 				}
 				else {
-					Attraction.apply(e.getSource(), e.getTarget(), getWeight(e));
+					if(getEdgeWeightInfluence() == 1) {
+						Attraction.apply(e.getSource(), e.getTarget(), getWeight(e));
+					}
+					else {
+						Attraction.apply(e.getSource(), e.getTarget(), Math.pow(getWeight(e), getEdgeWeightInfluence()));
+					}
 				}
-            }
-        } else {
-            for (Edge e : edges) {
-                Attraction.apply(e.getSource(), e.getTarget(), Math.pow(getWeight(e), getEdgeWeightInfluence()));
             }
         }
 
@@ -396,7 +397,7 @@ public class Florent implements Layout {
         double targetSpeed = getJitterTolerance() * getJitterTolerance() * totalEffectiveTraction / totalSwinging;
 
         // But the speed shoudn't rise too much too quickly, since it would make the convergence drop dramatically.
-        double maxRise = 0.5;   // Max rise: 50%
+        double maxRise = 0.4;   // Max rise: 50%
         speed = speed + Math.min(targetSpeed - speed, maxRise * speed);
 
         // Apply forces
