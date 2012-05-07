@@ -85,6 +85,7 @@ public class Florent implements Layout {
     private double jitterTolerance;
     private double scalingRatio;
     private double gravity;
+    private double factorf;
     private double speed;
     private boolean outboundAttractionDistribution;
     private boolean adjustSizes;
@@ -213,7 +214,7 @@ public class Florent implements Layout {
 				if (cohe < 0.0000000000000000000000000000000000000000000000000000000000000000000000001) {
 					cohe = 0.0000000000000000000000000000000000000000000000000000000000000000000000001 ;
 				}
-				cohecomm[i] = (float) (Math.sqrt(Comm.get(i).size())*2.*(1.-0.5*Math.log(cohe))) ;
+				cohecomm[i] = (float) (Math.sqrt(Comm.get(i).size())*2.*(1.-Math.log(cohe))) ;
 			}
 			
 			for (Edge e : graph.getEdgesAndMetaEdges()) {
@@ -336,9 +337,9 @@ public class Florent implements Layout {
 				String verif = "ficelle" ;
 				EdgeData ed = e.getEdgeData() ;
 				String edLab = ed.getLabel() ;
-				double adjsize = 1. ;
+				double adjsize = getfactorf() ;
 				if (isAdjustSizes()) {
-					adjsize = 2. ;
+					adjsize = 2.*adjsize ;
 				}
 				if (verif.equals(edLab)) {
 					Node n = e.getSource() ;
@@ -360,7 +361,12 @@ public class Florent implements Layout {
 							
 						}
 						else {
-							Attraction.apply(e.getSource(), e.getTarget(), (adjsize+10.*(1+coeff)));
+							if (isAdjustSizes()) {
+								Attraction.apply(e.getSource(), e.getTarget(), (5.*(1+coeff)));
+							}
+							else {
+								Attraction.apply(e.getSource(), e.getTarget(), (10.*(1+coeff)));
+							}
 						}
 					}
 				}
@@ -404,7 +410,7 @@ public class Florent implements Layout {
                     // Adaptive auto-speed: the speed of each node is lowered
                     // when the node swings.
                     double swinging = Math.sqrt((nLayout.old_dx - nLayout.dx) * (nLayout.old_dx - nLayout.dx) + (nLayout.old_dy - nLayout.dy) * (nLayout.old_dy - nLayout.dy));
-                    double factor = 0.1 * speed / (1f + speed * Math.sqrt(swinging));
+                    double factor = 0.05 * speed / (1f + speed * Math.sqrt(swinging));
 
                     double df = Math.sqrt(Math.pow(nLayout.dx, 2) + Math.pow(nLayout.dy, 2));
                     factor = Math.min(factor * df, 10.) / df;
@@ -496,6 +502,14 @@ public class Florent implements Layout {
                     "Florent.gravity.name",
                     NbBundle.getMessage(getClass(), "Florent.gravity.desc"),
                     "getGravity", "setGravity"));
+			
+			properties.add(LayoutProperty.createProperty(
+														 this, Double.class,
+														 NbBundle.getMessage(getClass(), "Florent.factorf.name"),
+														 FORCEATLAS2_TUNING,
+														 "Florent.factorf.name",
+														 NbBundle.getMessage(getClass(), "Florent.factorf.desc"),
+														 "getfactorf", "setfactorf"));
 
             properties.add(LayoutProperty.createProperty(
                     this, Boolean.class,
@@ -593,6 +607,7 @@ public class Florent implements Layout {
         }
         setStrongGravityMode(false);
         setGravity(1.);
+		setfactorf(1.) ;
 
         // Behavior
         setOutboundAttractionDistribution(false);
@@ -686,9 +701,18 @@ public class Florent implements Layout {
     public Double getGravity() {
         return gravity;
     }
+	
+	public Double getfactorf() {
+        return factorf;
+    }
+	
 
     public void setGravity(Double gravity) {
         this.gravity = gravity;
+    }
+	
+	public void setfactorf(Double factorf) {
+        this.factorf = factorf;
     }
 
     public Integer getThreadsCount() {
