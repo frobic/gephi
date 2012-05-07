@@ -184,6 +184,13 @@ public class Florent implements Layout {
 				test.getNodeData().setLabel("Florent_Virtual_Node");
 				test.getNodeData().setSize(0.1f) ;
 				test.getNodeData().setColor(1f,1f,1f) ;
+				FlorentLayoutData nLayout = new FlorentLayoutData();
+				nLayout.mass = 0 ;
+				nLayout.old_dx = 0;
+				nLayout.old_dy = 0;
+				nLayout.dx = 0;
+				nLayout.dy = 0;
+				test.getNodeData().setLayoutData(nLayout) ;
 				graph.addNode(test) ;
 				if (commBegin == -1) {
 					commBegin = test.getId() ;
@@ -211,8 +218,8 @@ public class Florent implements Layout {
 			float[] cohecomm = new float[NbCommunautes] ;
 			for (int i = 0 ; i < NbCommunautes ; i++) {
 				double cohe = cohesion(i) ;
-				if (cohe < 0.0000000000000000000000000000000000000000000000000000000000000000000000001) {
-					cohe = 0.0000000000000000000000000000000000000000000000000000000000000000000000001 ;
+				if (cohe < 0.0001) {
+					cohe = 0.0001 ;
 				}
 				cohecomm[i] = (float) (Math.sqrt(Comm.get(i).size())*2.*(1.-Math.log(cohe))) ;
 			}
@@ -284,6 +291,9 @@ public class Florent implements Layout {
             nLayout.old_dy = nLayout.dy;
             nLayout.dx = 0;
             nLayout.dy = 0;
+			if (n.getNodeData().getLabel().startsWith("Florent")) {
+				nLayout.mass = 0 ;
+			}
         }
 
         // If Barnes Hut active, initialize root region
@@ -397,7 +407,7 @@ public class Florent implements Layout {
         double targetSpeed = getJitterTolerance() * getJitterTolerance() * totalEffectiveTraction / totalSwinging;
 
         // But the speed shoudn't rise too much too quickly, since it would make the convergence drop dramatically.
-        double maxRise = 0.4;   // Max rise: 50%
+        double maxRise = 0.5;   // Max rise: 50%
         speed = speed + Math.min(targetSpeed - speed, maxRise * speed);
 
         // Apply forces
