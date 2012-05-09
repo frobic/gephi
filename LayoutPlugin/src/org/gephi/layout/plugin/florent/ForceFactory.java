@@ -141,6 +141,7 @@ public class ForceFactory {
 			
 			if (distance > 500) {
                 // NB: factor = force / distance
+				
                 double factor = 0.01 * coefficient * n1Layout.mass * n2Layout.mass / distance / distance;
 				
                 n1Layout.dx += xDist * factor;
@@ -384,6 +385,9 @@ public class ForceFactory {
             double yDist = n1Data.y() - n2Data.y();
 
             // NB: factor = force / distance
+			if (n1Layout.mass == 0) {
+				n1Layout.mass = 1 ;
+			}
             double factor = -coefficient * e / n1Layout.mass;
 
             n1Layout.dx += xDist * factor;
@@ -456,6 +460,10 @@ public class ForceFactory {
 
             if (distance > 0) {
 
+				if (n1Layout.mass == 0) {
+					n1Layout.mass = 1 ;
+				}
+				
                 // NB: factor = force / distance
                 double factor = -coefficient * e * Math.log(1 + distance) / distance / n1Layout.mass;
 
@@ -529,6 +537,11 @@ public class ForceFactory {
 
             if (distance > 0) {
                 // NB: factor = force / distance
+				
+				if (n1Layout.mass == 0) {
+					n1Layout.mass = 1 ;
+				}
+				
                 double factor = -coefficient * e / n1Layout.mass;
 
                 n1Layout.dx += xDist * factor;
@@ -601,6 +614,10 @@ public class ForceFactory {
             double distance = Math.sqrt(xDist * xDist + yDist * yDist) - n1Data.getSize() - n2Data.getSize();
 
             if (distance > 0) {
+				
+				if (n1Layout.mass == 0) {
+					n1Layout.mass = 1 ;
+				}
 
                 // NB: factor = force / distance
                 double factor = -coefficient * e * Math.log(1 + distance) / distance / n1Layout.mass;

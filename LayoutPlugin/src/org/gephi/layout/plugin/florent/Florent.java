@@ -292,7 +292,7 @@ public class Florent implements Layout {
             nLayout.dx = 0;
             nLayout.dy = 0;
 			if (n.getNodeData().getLabel().startsWith("Florent")) {
-				nLayout.mass = 0 ;
+				nLayout.mass = 0.1 ;
 			}
         }
 
@@ -349,7 +349,9 @@ public class Florent implements Layout {
 				String edLab = ed.getLabel() ;
 				double adjsize = getfactorf() ;
 				if (isAdjustSizes()) {
-					adjsize = adjsize ;
+					if (adjsize < 1.4) {
+						adjsize = 1.4*adjsize ;
+					}
 				}
 				if (verif.equals(edLab)) {
 					Node n = e.getSource() ;
@@ -363,8 +365,8 @@ public class Florent implements Layout {
 						coeff = coeff/getWeight(e) ;
 						if (coeff > 75) {
 							coeff = 75+Math.sqrt(coeff-75) ;
-							if (coeff > 75) {
-								coeff = 75 ;
+							if (coeff > 100) {
+								coeff = 100 ;
 							}
 						}
 						if (isDisableString()) {
@@ -407,7 +409,7 @@ public class Florent implements Layout {
         double targetSpeed = getJitterTolerance() * getJitterTolerance() * totalEffectiveTraction / totalSwinging;
 
         // But the speed shoudn't rise too much too quickly, since it would make the convergence drop dramatically.
-        double maxRise = 0.5;   // Max rise: 50%
+        double maxRise = 0.4;   // Max rise: 50%
         speed = speed + Math.min(targetSpeed - speed, maxRise * speed);
 
         // Apply forces
