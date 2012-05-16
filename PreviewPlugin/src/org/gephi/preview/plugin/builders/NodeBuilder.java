@@ -67,110 +67,6 @@ public class NodeBuilder implements ItemBuilder {
 
     public Item[] getItems(Graph graph, AttributeModel attributeModel) {
 		
-		int[] Rouge = new int[100] ;
-		int[] Vert = new int[100] ;
-		int[] Bleu = new int[100] ;
-		
-		Rouge[0] = 105; Vert[0] = 72; Bleu[0] = 36;
-		Rouge[1] = 51; Vert[1] = 23; Bleu[1] = 0;
-		Rouge[2] = 41; Vert[2] = 95; Bleu[2] = 153;
-		Rouge[3] = 255; Vert[3] = 127; Bleu[3] = 0;
-		Rouge[4] = 255; Vert[4] = 255; Bleu[4] = 0;
-		Rouge[5] = 127; Vert[5] = 0; Bleu[5] = 127;
-		Rouge[6] = 0; Vert[6] = 168; Bleu[6] = 51;
-		Rouge[7] = 255; Vert[7] = 0; Bleu[7] = 0;
-		Rouge[8] = 201; Vert[8] = 215; Bleu[8] = 229;
-		Rouge[9] = 102; Vert[9] = 49; Bleu[9] = 0;
-		Rouge[10] = 94; Vert[10] = 135; Bleu[10] = 178;
-		Rouge[11] = 204; Vert[11] = 101; Bleu[11] = 0;
-		Rouge[12] = 255; Vert[12] = 255; Bleu[12] = 191;
-		Rouge[13] = 70; Vert[13] = 17; Bleu[13] = 31;
-		Rouge[14] = 31; Vert[14] = 113; Bleu[14] = 127;
-		Rouge[15] = 255; Vert[15] = 95; Bleu[15] = 0;
-		Rouge[16] = 255; Vert[16] = 255; Bleu[16] = 63;
-		Rouge[17] = 108; Vert[17] = 5; Bleu[17] = 95;
-		Rouge[18] = 10; Vert[18] = 150; Bleu[18] = 76;
-		Rouge[19] = 255; Vert[19] = 31; Bleu[19] = 0;
-		Rouge[20] = 191; Vert[20] = 233; Bleu[20] = 12;
-		Rouge[21] = 159; Vert[21] = 0; Bleu[21] = 95;
-		Rouge[22] = 63; Vert[22] = 189; Bleu[22] = 38;
-		Rouge[23] = 223; Vert[23] = 0; Bleu[23] = 31;
-		Rouge[24] = 255; Vert[24] = 191; Bleu[24] = 191;
-		Rouge[25] = 38; Vert[25] = 60; Bleu[25] = 12;
-		Rouge[26] = 255; Vert[26] = 223; Bleu[26] = 0;
-		Rouge[27] = 106; Vert[27] = 23; Bleu[27] = 133;
-		Rouge[28] = 255; Vert[28] = 63; Bleu[28] = 63;
-		Rouge[29] = 12; Vert[29] = 132; Bleu[29] = 38;
-		Rouge[30] = 255; Vert[30] = 159; Bleu[30] = 0;
-		Rouge[31] = 63; Vert[31] = 71; Bleu[31] = 146;
-		Rouge[32] = 255; Vert[32] = 255; Bleu[32] = 127;
-		Rouge[33] = 89; Vert[33] = 11; Bleu[33] = 63;
-		Rouge[34] = 255; Vert[34] = 127; Bleu[34] = 127;
-		Rouge[35] = 25; Vert[35] = 96; Bleu[35] = 25;
-		Rouge[36] = 255; Vert[36] = 191; Bleu[36] = 0;
-		Rouge[37] = 84; Vert[37] = 47; Bleu[37] = 140;
-		Rouge[38] = 255; Vert[38] = 63; Bleu[38] = 0;
-		Rouge[39] = 20; Vert[39] = 131; Bleu[39] = 102;
-		Rouge[40] = 148; Vert[40] = 175; Bleu[40] = 204;
-		Rouge[41] = 153; Vert[41] = 75; Bleu[41] = 0;
-		Rouge[42] = 127; Vert[42] = 211; Bleu[42] = 25;
-		Rouge[43] = 191; Vert[43] = 0; Bleu[43] = 63;
-		Rouge[44] = 255; Vert[44] = 199; Bleu[44] = 143;
-		Rouge[45] = 55; Vert[45] = 50; Bleu[45] = 43;
-		Rouge[46] = 255; Vert[46] = 215; Bleu[46] = 47;
-		Rouge[47] = 89; Vert[47] = 32; Bleu[47] = 103;
-		Rouge[48] = 255; Vert[48] = 87; Bleu[48] = 47;
-		Rouge[49] = 25; Vert[49] = 116; Bleu[49] = 65;
-		Rouge[50] = 255; Vert[50] = 135; Bleu[50] = 15;
-		Rouge[51] = 50; Vert[51] = 86; Bleu[51] = 119;
-		Rouge[52] = 199; Vert[52] = 219; Bleu[52] = 175;
-		Rouge[53] = 116; Vert[53] = 37; Bleu[53] = 23;
-		Rouge[54] = 193; Vert[54] = 228; Bleu[54] = 66;
-		Rouge[55] = 145; Vert[55] = 12; Bleu[55] = 71;
-		Rouge[56] = 207; Vert[56] = 161; Bleu[56] = 180;
-		Rouge[57] = 92; Vert[57] = 84; Bleu[57] = 9;
-		Rouge[58] = 194; Vert[58] = 200; Bleu[58] = 9;
-		Rouge[59] = 143; Vert[59] = 33; Bleu[59] = 116;
-		Rouge[60] = 217; Vert[60] = 53; Bleu[60] = 81;
-		Rouge[61] = 73; Vert[61] = 154; Bleu[61] = 28;
-		Rouge[62] = 200; Vert[62] = 134; Bleu[62] = 3;
-		Rouge[63] = 111; Vert[63] = 101; Bleu[63] = 157;
-		Rouge[64] = 218; Vert[64] = 25; Bleu[64] = 23;
-		Rouge[65] = 71; Vert[65] = 176; Bleu[65] = 73;
-		Rouge[66] = 208; Vert[66] = 76; Bleu[66] = 7;
-		Rouge[67] = 87; Vert[67] = 148; Bleu[67] = 143;
-		Rouge[68] = 255; Vert[68] = 207; Bleu[68] = 95;
-		Rouge[69] = 72; Vert[69] = 41; Bleu[69] = 73;
-		Rouge[70] = 255; Vert[70] = 143; Bleu[70] = 95;
-		Rouge[71] = 40; Vert[71] = 83; Bleu[71] = 54;
-		Rouge[72] = 255; Vert[72] = 175; Bleu[72] = 31;
-		Rouge[73] = 69; Vert[73] = 59; Bleu[73] = 111;
-		Rouge[74] = 255; Vert[74] = 111; Bleu[74] = 31;
-		Rouge[75] = 37; Vert[75] = 101; Bleu[75] = 92;
-		Rouge[76] = 196; Vert[76] = 224; Bleu[76] = 121;
-		Rouge[77] = 130; Vert[77] = 24; Bleu[77] = 47;
-		Rouge[78] = 212; Vert[78] = 107; Bleu[78] = 130;
-		Rouge[79] = 82; Vert[79] = 119; Bleu[79] = 19;
-		Rouge[80] = 197; Vert[80] = 167; Bleu[80] = 6;
-		Rouge[81] = 127; Vert[81] = 67; Bleu[81] = 137;
-		Rouge[82] = 213; Vert[82] = 50; Bleu[82] = 15;
-		Rouge[83] = 79; Vert[83] = 162; Bleu[83] = 108;
-		Rouge[84] = 143; Vert[84] = 184; Bleu[84] = 159;
-		Rouge[85] = 162; Vert[85] = 56; Bleu[85] = 15;
-		Rouge[86] = 132; Vert[86] = 202; Bleu[86] = 70;
-		Rouge[87] = 181; Vert[87] = 18; Bleu[87] = 47;
-		Rouge[88] = 159; Vert[88] = 131; Bleu[88] = 168;
-		Rouge[89] = 146; Vert[89] = 109; Bleu[89] = 6;
-		Rouge[90] = 133; Vert[90] = 177; Bleu[90] = 19;
-		Rouge[91] = 180; Vert[91] = 43; Bleu[91] = 98;
-		Rouge[92] = 255; Vert[92] = 159; Bleu[92] = 63;
-		Rouge[93] = 55; Vert[93] = 71; Bleu[93] = 82;
-		Rouge[94] = 137; Vert[94] = 193; Bleu[94] = 114;
-		Rouge[95] = 172; Vert[95] = 37; Bleu[95] = 31;
-		Rouge[96] = 169; Vert[96] = 87; Bleu[96] = 133;
-		Rouge[97] = 140; Vert[97] = 143; Bleu[97] = 12;
-		Rouge[98] = 203; Vert[98] = 171; Bleu[98] = 137;
-		Rouge[99] = 255; Vert[99] = 255; Bleu[99] = 255;
 		
 		int NbCommunautes = 0 ;
 		
@@ -271,12 +167,14 @@ public class NodeBuilder implements ItemBuilder {
 			
 			int best = 0 ;
 			Double[] CouleurVue = StockCouleur.get(0) ;
+			Double[] CouleurVueCab = RYBToCab(CouleurVue[0],CouleurVue[1],CouleurVue[2]) ;
 			double bestc ;
 			double courant = 0. ;
 			
 			for (int ii = 0 ; ii < BeFarTo.size() ; ii++) {
 				Double[] temp = BeFarTo.get(ii) ;
-				courant = courant + (CouleurVue[0]-temp[0])*(CouleurVue[0]-temp[0])+ (CouleurVue[1]-temp[1])*(CouleurVue[1]-temp[1])+ (CouleurVue[2]-temp[2])*(CouleurVue[2]-temp[2]) ;
+				Double[] Temp2 = RYBToCab(temp[0],temp[1],temp[2]) ;
+				courant = courant + (CouleurVueCab[0]-Temp2[0])*(CouleurVueCab[0]-Temp2[0])+ (CouleurVueCab[1]-Temp2[1])*(CouleurVueCab[1]-Temp2[1])+ (CouleurVueCab[2]-Temp2[2])*(CouleurVueCab[2]-Temp2[2]) ;
 			}
 			
 			bestc = courant ;
@@ -284,9 +182,11 @@ public class NodeBuilder implements ItemBuilder {
 			for (int j = 1 ; j < StockCouleur.size() ; j++) {
 				courant = 0. ;
 				CouleurVue = StockCouleur.get(j) ;
+				CouleurVueCab = RYBToCab(CouleurVue[0],CouleurVue[1],CouleurVue[2]) ;
 				for (int ii = 0 ; ii < BeFarTo.size() ; ii++) {
 					Double[] temp = BeFarTo.get(ii) ;
-					courant = courant + (CouleurVue[0]-temp[0])*(CouleurVue[0]-temp[0])+ (CouleurVue[1]-temp[1])*(CouleurVue[1]-temp[1])+ (CouleurVue[2]-temp[2])*(CouleurVue[2]-temp[2]) ;
+					Double[] Temp2 = RYBToCab(temp[0],temp[1],temp[2]) ;
+					courant = courant + (CouleurVueCab[0]-Temp2[0])*(CouleurVueCab[0]-Temp2[0])+ (CouleurVueCab[1]-Temp2[1])*(CouleurVueCab[1]-Temp2[1])+ (CouleurVueCab[2]-Temp2[2])*(CouleurVueCab[2]-Temp2[2]) ;
 				}
 				if (courant > bestc) {
 					best = j ;
@@ -503,7 +403,8 @@ public class NodeBuilder implements ItemBuilder {
 				nodeItem.setData(NodeItem.Y, (float) (Baryy[d]/(double)CommSize[d]));
 				nodeItem.setData(NodeItem.Z, n.getNodeData().z());
 				nodeItem.setData(NodeItem.NBCOLOR,1) ;
-				colortab[0] = new Color(Rouge[d%100],Vert[d%100],Bleu[d%100],255) ;
+				Double[] Couleur = CommCouleurRYB.get(d) ;
+				colortab[0] = new Color((int)Math.floor(255*RYBToR(Couleur[0],Couleur[1],Couleur[2])),(int)Math.floor(255*RYBToG(Couleur[0],Couleur[1],Couleur[2])),(int)Math.floor(255*RYBToB(Couleur[0],Couleur[1],Couleur[2])),255) ;
 				nodeItem.setData(NodeItem.COLORS,colortab) ;
 			nodeItem.setData(NodeItem.COLOR, new Color((int) (n.getNodeData().r() * 255),
                     (int) (n.getNodeData().g() * 255),
@@ -527,6 +428,86 @@ public class NodeBuilder implements ItemBuilder {
     public String getType() {
         return ItemBuilder.NODE_BUILDER;
     }
+	
+	public Double[] RYBToRGB(double r, double y, double b) {
+		Double[] retour = { 1 * (1 - r) * (1 - b) * (1 - y) + 1 * r * (1 - b) * (1 - y) + 0.163 * (1 - r) * b * (1 - y) + 0.5 * r * b * (1 - y) + 1 * (1 - r) * (1 - b) * y + 1 * r * (1 - b) * y + 0 * (1 - r) * b * y + 0.2 * r * b * y,1 * (1 - r) * (1 - b) * (1 - y) + 0 * r * (1 - b) * (1 - y) + 0.373 * (1 - r) * b * (1 - y) + 0 * r * b * (1 - y) + 1 * (1 - r) * (1 - b) * y + 0.5 * r * (1 - b) * y + 0.66 * (1 - r) * b * y + 0.094 * r * b * y,1 * (1 - r) * (1 - b) * (1 - y) + 0 * r * (1 - b) * (1 - y) + 0.6 * (1 - r) * b * (1 - y) + 0.5 * r * b * (1 - y) + 0 * (1 - r) * (1 - b) * y + 0 * r * (1 - b) * y + 0.2 * (1 - r) * b * y + 0 * r * b * y } ;
+		return retour ;
+	}
+	
+	public Double[] RGBToXYZ(double r, double g, double b) {
+		double var_R = r ;
+		double var_G = g ;
+		double var_B = b ;
+		
+		if (var_R > 0.04045) {
+			var_R = Math.pow((var_R+0.055)/1.055,2.4);
+		}
+		else {
+			var_R = var_R / 12.92 ;
+		}
+		
+		if (var_G > 0.04045) {
+			var_G = Math.pow((var_G+0.055)/1.055,2.4);
+		}
+		else {
+			var_G = var_G / 12.92 ;
+		}
+		
+		if (var_B > 0.04045) {
+			var_B = Math.pow((var_B+0.055)/1.055,2.4);
+		}
+		else {
+			var_B = var_B / 12.92 ;
+		}
+		
+		var_R = var_R * 100. ;
+		var_G = var_G * 100. ;
+		var_B = var_B * 100. ;
+		
+		Double[] retour = {var_R * 0.4124 + var_G * 0.3576 + var_B * 0.1805,var_R * 0.2126 + var_G * 0.7152 + var_B * 0.0722,var_R * 0.0193 + var_G * 0.1192 + var_B * 0.9505} ;
+		
+		return retour ;
+	}
+	
+	public Double[] XYZToCab(double x , double y , double z) {
+		double var_X = x/95.047 ;
+		double var_Y = y/100.000 ;
+		double var_Z = z/108.883 ;
+		
+		if (var_X > 0.008856) {
+			var_X = Math.pow(var_X,1./3.);
+		}
+		else {
+			var_X = ( 7.787 * var_X ) + ( 16 / 116 ) ;
+		}
+		
+		if (var_Y > 0.008856) {
+			var_Y = Math.pow(var_Y,1./3.);
+		}
+		else {
+			var_Y = ( 7.787 * var_Y ) + ( 16 / 116 ) ;
+		}
+		
+		if (var_Z > 0.008856) {
+			var_Z = Math.pow(var_Z,1./3.);
+		}
+		else {
+			var_Z = ( 7.787 * var_Z ) + ( 16 / 116 ) ;
+		}
+		
+		Double[] retour = {( 116. * var_Y ) - 16.,500. * ( var_X - var_Y ),200. * ( var_Y - var_Z )} ;
+		
+		return retour ;
+	}
+	
+	public Double[] RYBToCab(double r, double y, double b) {
+		Double[] RGB =  RYBToRGB(r,y,b) ;
+		Double[] XYZ = RGBToXYZ(RGB[0],RGB[1],RGB[2]) ;
+		Double[] Cab = XYZToCab(XYZ[0],XYZ[1],XYZ[2]) ;
+		
+		return Cab ;
+	}
+	
 	
 	public double RYBToR(double r, double y, double b) {
 		return 1 * (1 - r) * (1 - b) * (1 - y) + 1 * r * (1 - b) * (1 - y) + 0.163 * (1 - r) * b * (1 - y) + 0.5 * r * b * (1 - y) + 1 * (1 - r) * (1 - b) * y + 1 * r * (1 - b) * y + 0 * (1 - r) * b * y + 0.2 * r * b * y ;
