@@ -56,6 +56,7 @@ import org.openide.util.lookup.ServiceProvider;
 import java.lang.String;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -174,10 +175,12 @@ public class NodeBuilder implements ItemBuilder {
 			for (int ii = 0 ; ii < BeFarTo.size() ; ii++) {
 				Double[] temp = BeFarTo.get(ii) ;
 				Double[] Temp2 = RYBToCab(temp[0],temp[1],temp[2]) ;
-				courant = courant + (CouleurVueCab[0]-Temp2[0])*(CouleurVueCab[0]-Temp2[0])+ (CouleurVueCab[1]-Temp2[1])*(CouleurVueCab[1]-Temp2[1])+ (CouleurVueCab[2]-Temp2[2])*(CouleurVueCab[2]-Temp2[2]) ;
+				courant = courant + Delta(CouleurVueCab,Temp2);
 			}
 			
 			bestc = courant ;
+			
+			
 			
 			for (int j = 1 ; j < StockCouleur.size() ; j++) {
 				courant = 0. ;
@@ -186,7 +189,7 @@ public class NodeBuilder implements ItemBuilder {
 				for (int ii = 0 ; ii < BeFarTo.size() ; ii++) {
 					Double[] temp = BeFarTo.get(ii) ;
 					Double[] Temp2 = RYBToCab(temp[0],temp[1],temp[2]) ;
-					courant = courant + (CouleurVueCab[0]-Temp2[0])*(CouleurVueCab[0]-Temp2[0])+ (CouleurVueCab[1]-Temp2[1])*(CouleurVueCab[1]-Temp2[1])+ (CouleurVueCab[2]-Temp2[2])*(CouleurVueCab[2]-Temp2[2]) ;
+					courant = courant + Delta(CouleurVueCab,Temp2);
 				}
 				if (courant > bestc) {
 					best = j ;
@@ -199,8 +202,11 @@ public class NodeBuilder implements ItemBuilder {
 			StockCouleur.remove(best) ;
 			
 		}
-		
-		
+		System.err.println(Arrays.toString(RGBToCab(1,0,0))) ;
+
+		System.err.println(Arrays.toString(RGBToCab(0,1,0))) ;
+		System.err.println(Arrays.toString(RGBToCab(0,0,1))) ;
+
 		
 		int first ;
 		
@@ -478,21 +484,21 @@ public class NodeBuilder implements ItemBuilder {
 			var_X = Math.pow(var_X,1./3.);
 		}
 		else {
-			var_X = ( 7.787 * var_X ) + ( 16 / 116 ) ;
+			var_X = ( 7.787 * var_X ) + ( 16. / 116. ) ;
 		}
 		
 		if (var_Y > 0.008856) {
 			var_Y = Math.pow(var_Y,1./3.);
 		}
 		else {
-			var_Y = ( 7.787 * var_Y ) + ( 16 / 116 ) ;
+			var_Y = ( 7.787 * var_Y ) + ( 16. / 116. ) ;
 		}
 		
 		if (var_Z > 0.008856) {
 			var_Z = Math.pow(var_Z,1./3.);
 		}
 		else {
-			var_Z = ( 7.787 * var_Z ) + ( 16 / 116 ) ;
+			var_Z = ( 7.787 * var_Z ) + ( 16. / 116. ) ;
 		}
 		
 		Double[] retour = {( 116. * var_Y ) - 16.,500. * ( var_X - var_Y ),200. * ( var_Y - var_Z )} ;
@@ -508,6 +514,27 @@ public class NodeBuilder implements ItemBuilder {
 		return Cab ;
 	}
 	
+	public Double[] RGBToCab(double r, double g, double b) {
+		Double[] XYZ = RGBToXYZ(r,g,b) ;
+		Double[] Cab = XYZToCab(XYZ[0],XYZ[1],XYZ[2]) ;
+		
+		return Cab ;
+	}
+	
+	public double Delta(Double[] C1, Double[] C2) {
+		
+		double DeltaL = C1[0] - C2[0] ;
+		double C1s = Math.sqrt(C1[1]*C1[1]+C1[2]*C1[2]) ;
+		double C2s = Math.sqrt(C2[1]*C2[1]+C2[2]*C2[2]) ;
+		double DeltaC = C1s - C2s ;
+		double Deltaa = C1[1] - C2[1] ;
+		double Deltab = C1[2] - C2[2] ;
+		double DeltaH = Math.sqrt(Deltaa*Deltaa + Deltab*Deltab - DeltaC*DeltaC) ;
+		
+		return Math.sqrt(DeltaL*DeltaL+ (DeltaC/(1+0.045*C1s))*(DeltaC/(1+0.045*C1s))+ (DeltaH/(1+0.015*C1s))*(DeltaH/(1+0.015*C1s))) ;
+		//return Math.sqrt((C1[0]-C2[0])*(C1[0]-C2[0])+ (C1[1]-C2[1])*(C1[1]-C2[1])+ (C1[2]-C2[2])*(C1[2]-C2[2])) ;
+		
+	}
 	
 	public double RYBToR(double r, double y, double b) {
 		return 1 * (1 - r) * (1 - b) * (1 - y) + 1 * r * (1 - b) * (1 - y) + 0.163 * (1 - r) * b * (1 - y) + 0.5 * r * b * (1 - y) + 1 * (1 - r) * (1 - b) * y + 1 * r * (1 - b) * y + 0 * (1 - r) * b * y + 0.2 * r * b * y ;
