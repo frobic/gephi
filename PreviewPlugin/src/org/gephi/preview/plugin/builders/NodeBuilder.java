@@ -248,12 +248,12 @@ public class NodeBuilder implements ItemBuilder {
 			Double[] CouleurVue = StockCouleur.get(0) ;
 			Double[] CouleurVueCab = RYBToCab(CouleurVue[0],CouleurVue[1],CouleurVue[2]) ;
 			double bestc ;
-			double courant = 0. ;
+			double courant = 1000. ;
 			
 			for (int ii = 0 ; ii < BeFarTo.size() ; ii++) {
 				Double[] temp = BeFarTo.get(ii) ;
 				Double[] Temp2 = RYBToCab(temp[0],temp[1],temp[2]) ;
-				courant = courant + Delta(CouleurVueCab,Temp2);
+				courant = Math.min(courant,Delta(CouleurVueCab,Temp2));
 			}
 			
 			bestc = courant ;
@@ -261,6 +261,7 @@ public class NodeBuilder implements ItemBuilder {
 			
 			
 			for (int j = 1 ; j < StockCouleur.size() ; j++) {
+				courant = 1000 ;
 				CouleurVue = StockCouleur.get(j) ;
 				CouleurVueCab = RYBToCab(CouleurVue[0],CouleurVue[1],CouleurVue[2]) ;
 				for (int ii = 0 ; ii < BeFarTo.size() ; ii++) {
