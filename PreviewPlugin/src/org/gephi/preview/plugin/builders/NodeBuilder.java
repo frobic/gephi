@@ -199,7 +199,7 @@ public class NodeBuilder implements ItemBuilder {
 					temp = CommCouleurRYB.get(i) ;
 
 				}
-				if (temp[2] == 0) {
+				if (temp[2] != 0) {
 					i = -1 ;
 					for (int ii = 0 ; ii <= NbCommunautes ; ii++) {
 						temp = CommCouleurRYB.get(ii) ;
