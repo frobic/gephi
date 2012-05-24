@@ -135,18 +135,59 @@ public class NodeBuilder implements ItemBuilder {
 		Queue<Integer> queue = new LinkedList<Integer>();
 		queue.add(0) ;
 		
+		ArrayList<Integer>[] CommNeighbors = (ArrayList<Integer>[]) new ArrayList[NbCommunautes+1] ;
+		for (int i = 0 ; i <= NbCommunautes ; i++) {
+			int nb = 0 ;
+			CommNeighbors[i] = new ArrayList<Integer>() ;
+			for (int j = 0 ; j < Communities.get(i).size() ; j++) {
+				Node n = nodes[Communities.get(i).get(j)] ;
+				if (n.getNodeData().getAttributes().getValue("Comm") != null) {
+					StringList temp = (StringList) n.getNodeData().getAttributes().getValue("Comm") ;
+					for (int _i = 0 ; _i < temp.size() ; _i++) {
+						
+						int c = Integer.parseInt(temp.getItem(_i)) ;
+						
+						boolean addthis = true ;
+						
+						for (int _j = 0 ; _j < CommNeighbors[i].size() ; _j++) {
+							if (CommNeighbors[i].get(_j) == c) {
+								addthis = false ;
+							}
+						}
+						
+						if (c != i && addthis) {
+							CommNeighbors[i].add(c) ;
+						}
+						
+					}
+				}
+			}
+			
+		}
+		
 		int i = 0 ;
 		int jj = 0 ;
+		
+		
+
 		
 		while (jj <= NbCommunautes) {
 			
 			jj++ ;
 
 			if (queue.isEmpty()) {
+				
+				i = -1 ;
+				
 				for (int ii = 0 ; ii <= NbCommunautes ; ii++) {
 					Double[] temp = CommCouleurRYB.get(ii) ;
-					if (temp[2] == 0) {
+					if (temp[2] == 0 && i == -1) {
 						i = ii ;
+					}
+					else if ( temp[2] == 0 && i != -1) {
+						if (CommNeighbors[i].size() < CommNeighbors[ii].size() ) {
+							i = ii ;
+						}
 					}
 				}
 			}
@@ -155,11 +196,21 @@ public class NodeBuilder implements ItemBuilder {
 				Double[] temp = CommCouleurRYB.get(i) ;
 				while(temp[2] != 0 && ! queue.isEmpty()) {
 					i = queue.remove() ;
+					temp = CommCouleurRYB.get(i) ;
+
 				}
-				for (int ii = 0 ; ii <= NbCommunautes ; ii++) {
-					temp = CommCouleurRYB.get(ii) ;
-					if (temp[2] == 0) {
-						i = ii ;
+				if (temp[2] == 0) {
+					i = -1 ;
+					for (int ii = 0 ; ii <= NbCommunautes ; ii++) {
+						temp = CommCouleurRYB.get(ii) ;
+						if (temp[2] == 0) {
+							i = ii ;
+						}
+						else if ( temp[2] == 0 && i != -1) {
+							if (CommNeighbors[i].size() < CommNeighbors[ii].size() ) {
+								i = ii ;
+							}
+						}
 					}
 				}
 			}
@@ -184,7 +235,7 @@ public class NodeBuilder implements ItemBuilder {
 						}
 						
 						
-						if (addthis) {
+						if (addthis && c!=i) {
 							BeFarTo.add(CommCouleurRYB.get(c)) ;
 						}
 						
