@@ -89,7 +89,7 @@ public class EdgeBuilder implements ItemBuilder {
 				item.setData(EdgeItem.WEIGHT, 0.01f);
 			}
 			else {
-				item.setData(EdgeItem.WEIGHT, e.getWeight(timeInterval.getLow(), timeInterval.getHigh()));
+				item.setData(EdgeItem.WEIGHT, 1.0f) ; //e.getWeight(timeInterval.getLow(), timeInterval.getHigh()));
 			}
             item.setData(EdgeItem.DIRECTED, e.isDirected());
             if (graph instanceof HierarchicalDirectedGraph) {

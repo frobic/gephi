@@ -86,6 +86,8 @@ public class Florent implements Layout {
     private double scalingRatio;
     private double gravity;
     private double factorf;
+	private double alpha;
+
     private double speed;
     private boolean outboundAttractionDistribution;
     private boolean adjustSizes;
@@ -383,11 +385,12 @@ public class Florent implements Layout {
 					}
 				}
 				else {
+					double a = getalpha() ;
 					if(getEdgeWeightInfluence() == 1) {
-						Attraction.apply(e.getSource(), e.getTarget(), getWeight(e));
+						Attraction.apply(e.getSource(), e.getTarget(),1 - a + a * getWeight(e));
 					}
 					else {
-						Attraction.apply(e.getSource(), e.getTarget(), Math.pow(getWeight(e), getEdgeWeightInfluence()));
+						Attraction.apply(e.getSource(), e.getTarget(), Math.pow(1 - a + a * getWeight(e),getEdgeWeightInfluence()));
 					}
 				}
             }
@@ -523,6 +526,14 @@ public class Florent implements Layout {
 														 "Florent.factorf.name",
 														 NbBundle.getMessage(getClass(), "Florent.factorf.desc"),
 														 "getfactorf", "setfactorf"));
+			
+			properties.add(LayoutProperty.createProperty(
+														 this, Double.class,
+														 NbBundle.getMessage(getClass(), "Florent.alpha.name"),
+														 FORCEATLAS2_TUNING,
+														 "Florent.alpha.name",
+														 NbBundle.getMessage(getClass(), "Florent.alpha.desc"),
+														 "getalpha", "setalpha"));
 
             properties.add(LayoutProperty.createProperty(
                     this, Boolean.class,
@@ -622,6 +633,8 @@ public class Florent implements Layout {
         setGravity(1.);
 		setfactorf(1.) ;
 
+		setalpha(0.75) ;
+		
         // Behavior
         setOutboundAttractionDistribution(false);
         setLinLogMode(false);
@@ -719,6 +732,9 @@ public class Florent implements Layout {
         return factorf;
     }
 	
+	public Double getalpha() {
+        return alpha;
+    }
 
     public void setGravity(Double gravity) {
         this.gravity = gravity;
@@ -726,6 +742,10 @@ public class Florent implements Layout {
 	
 	public void setfactorf(Double factorf) {
         this.factorf = factorf;
+    }
+	
+	public void setalpha(Double alpha) {
+        this.alpha = alpha;
     }
 
     public Integer getThreadsCount() {
