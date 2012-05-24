@@ -58,6 +58,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.*;
+import java.awt.geom.Point2D ;
 
 
 /**
@@ -103,8 +104,8 @@ public class NodeBuilder implements ItemBuilder {
 		
 		ArrayList<Double[]> StockCouleur = new ArrayList<Double[]>() ;
 		ArrayList<Double[]> CommCouleurRYB = new ArrayList<Double[]>() ;
-		for (int i = 0 ; i < NbCommunautes+2 ; i++) {
-			Double[] couleur = {(360.*(double)i/((double) (NbCommunautes+2))),0.75+((double)i%2./4.),0.75+((double)i%2./4.) } ; 
+		for (int i = 0 ; i < NbCommunautes+5 ; i++) {
+			Double[] couleur = {(360.*(double)i/((double) (NbCommunautes+5))),0.75+((double)i%2./4.),0.75+((double)i%2./4.) } ; 
 					StockCouleur.add(couleur) ;
 		}
 		
@@ -179,13 +180,9 @@ public class NodeBuilder implements ItemBuilder {
 						
 						if (java.util.Arrays.equals(CommCouleurRYB.get(c),couleur) && c != i) {
 							queue.add(c) ;
+							addthis = false ;
 						}
 						
-						for (int ii = 0 ; ii < BeFarTo.size() ; ii++) {
-							if (java.util.Arrays.equals(CommCouleurRYB.get(c),BeFarTo.get(ii))) {
-								addthis = false ;
-							}
-						}
 						
 						if (addthis) {
 							BeFarTo.add(CommCouleurRYB.get(c)) ;
@@ -232,65 +229,78 @@ public class NodeBuilder implements ItemBuilder {
 			StockCouleur.remove(best) ;
 			
 		}
-		System.err.println(Arrays.toString(RGBToCab(1,0,0))) ;
-
-		System.err.println(Arrays.toString(RGBToCab(0,1,0))) ;
-		System.err.println(Arrays.toString(RGBToCab(0,0,1))) ;
 
 		
 		int first ;
 		
-		float x ;
-		float y ;
+		double x ;
+		double y ;
 		System.err.println("###################") ;
 
-		ArrayList<ArrayList<Integer>> ConvexHullList = new ArrayList<ArrayList<Integer>>();
-		ArrayList<Float> AreaHull = new ArrayList<Float>() ;
+		ArrayList<ArrayList<Point2D>> ConvexHullList = new ArrayList<ArrayList<Point2D>>();
+		ArrayList<Double> AreaHull = new ArrayList<Double>() ;
+		
 		for (i = 0 ; i < Communities.size() ; i++) {
-			first = 0 ;
-			Node noeud = nodes[Communities.get(i).get(0)] ;
-			x = noeud.getNodeData().x() ;
-			y = noeud.getNodeData().y() ;
-			for (int j = 1 ; j < Communities.get(i).size() ; j++) {
+		
+			ArrayList<Point2D> Points = new ArrayList<Point2D>() ;
+			
+			for(int j = 1 ; j < Communities.get(i).size() ; j++) {
 				Node n = nodes[Communities.get(i).get(j)] ;
-				if (n.getNodeData().x() < x || (n.getNodeData().x() == x && n.getNodeData().y() < y )) {
-					x = n.getNodeData().x() ;
-					y = n.getNodeData().y() ;
+				x = n.getNodeData().x() ;
+				y = n.getNodeData().y() ;
+				Point2D gauche = new Point2D.Double(x-10,y) ;
+				Point2D droite = new Point2D.Double(x+10,y) ;
+				Point2D haut = new Point2D.Double(x,y-10) ;
+				Point2D bas = new Point2D.Double(x,y+10) ;
+				
+				Points.add(gauche) ;
+				Points.add(droite) ;
+				Points.add(bas) ;
+				Points.add(haut) ;
+			}
+			
+			first = 0 ;
+			x = Points.get(0).getX() ;
+			y = Points.get(0).getY() ;
+			for (int j = 1 ; j < Points.size() ; j++) {
+				Point2D n = Points.get(j) ;
+				if (n.getX() < x || (n.getX() == x && n.getY() < y )) {
+					x = n.getX() ;
+					y = n.getY() ;
 					first = j ;
 				}
 			}
-			//System.err.println(first) ;
 			
-			ArrayList<Integer> ConvexHull = new ArrayList<Integer>();
+			ArrayList<Point2D> ConvexHull = new ArrayList<Point2D>();
 			int courant = first ;
-			ConvexHull.add(Communities.get(i).get(courant)) ;
+			ConvexHull.add(Points.get(courant)) ;
 			do {
 				int recherche = 0 ;
-				for (int j = 1 ; j < Communities.get(i).size() ; j++) {
-					NodeData p1 = nodes[Communities.get(i).get(courant)].getNodeData() ;
-					NodeData p2 = nodes[Communities.get(i).get(recherche)].getNodeData() ;
-					NodeData p3 = nodes[Communities.get(i).get(j)].getNodeData() ;
+				for (int j = 1 ; j < Points.size() ; j++) {
+					Point2D p1 = Points.get(courant) ;
+					Point2D p2 = Points.get(recherche) ;
+					Point2D p3 = Points.get(j) ;
 					if (courant == recherche) {
 						recherche = j ;
 					}
-					else if ((p2.x() - p1.x())*(p3.y() - p1.y()) - (p3.x() - p1.x())*(p2.y() - p1.y()) > 0) {
+					else if ((p2.getX() - p1.getX())*(p3.getY() - p1.getY()) - (p3.getX() - p1.getX())*(p2.getY() - p1.getY()) > 0) {
 						recherche = j ;
 					}
 				}
 				courant = recherche ;
-				ConvexHull.add(Communities.get(i).get(courant)) ;
+				ConvexHull.add(Points.get(courant)) ;
 				
 
 			} while ( courant != first);
 			
 			
 			ConvexHullList.add(ConvexHull) ;
-			float Aire = 0f ;
+			double Aire = 0f ;
 			
 			for (int j = 0 ; j < ConvexHull.size()-1 ; j++) {
-				NodeData p0 = nodes[ConvexHull.get(j)].getNodeData() ;
-				NodeData p1 = nodes[ConvexHull.get(j+1)].getNodeData() ;
-				Aire = Aire + p0.x()*p1.y() - p1.x()*p0.y() ;
+				Point2D p0 = ConvexHull.get(j) ;
+				Point2D p1 = ConvexHull.get(j+1) ;
+				Aire = Aire + p0.getX()*p1.getY() - p1.getX()*p0.getY() ;
 			}
 			AreaHull.add(-Aire) ;
 			
@@ -310,10 +320,10 @@ public class NodeBuilder implements ItemBuilder {
 					if (inc) {
 						boolean inp = true ;
 						for (int j = 0 ; j < ConvexHull.size()-1 ; j++) {
-							NodeData p1 = nodes[ConvexHull.get(j)].getNodeData() ;
-							NodeData p2 = nodes[ConvexHull.get(j+1)].getNodeData() ;
+							Point2D p1 = ConvexHull.get(j) ;
+							Point2D p2 = ConvexHull.get(j+1) ;
 							NodeData p3 = n.getNodeData() ;
-							if ((p2.x() - p1.x())*(p3.y() - p1.y()) - (p3.x() - p1.x())*(p2.y() - p1.y()) > 0) {
+							if ((p2.getX() - p1.getX())*(p3.y() - p1.getY()) - (p3.x() - p1.getX())*(p2.getY() - p1.getY()) > 0) {
 								inp = false ;
 							}
 						}
@@ -603,7 +613,7 @@ public class NodeBuilder implements ItemBuilder {
 		double Deltab = C1[2] - C2[2] ;
 		double DeltaH = Math.sqrt(Deltaa*Deltaa + Deltab*Deltab - DeltaC*DeltaC) ;
 		
-		return Math.sqrt(DeltaL*DeltaL+ (DeltaC/(1+0.045*C1s))*(DeltaC/(1+0.045*C1s))+ (DeltaH/(1+0.015*C1s))*(DeltaH/(1+0.015*C1s))) ;
+		return DeltaL*DeltaL+ (DeltaC/(1+0.045*C1s))*(DeltaC/(1+0.045*C1s))+ (DeltaH/(1+0.015*C1s))*(DeltaH/(1+0.015*C1s)) ;
 		//return Math.sqrt((C1[0]-C2[0])*(C1[0]-C2[0])+ (C1[1]-C2[1])*(C1[1]-C2[1])+ (C1[2]-C2[2])*(C1[2]-C2[2])) ;
 		
 	}
