@@ -261,13 +261,12 @@ public class NodeBuilder implements ItemBuilder {
 			
 			
 			for (int j = 1 ; j < StockCouleur.size() ; j++) {
-				courant = 0. ;
 				CouleurVue = StockCouleur.get(j) ;
 				CouleurVueCab = RYBToCab(CouleurVue[0],CouleurVue[1],CouleurVue[2]) ;
 				for (int ii = 0 ; ii < BeFarTo.size() ; ii++) {
 					Double[] temp = BeFarTo.get(ii) ;
 					Double[] Temp2 = RYBToCab(temp[0],temp[1],temp[2]) ;
-					courant = courant + Delta(CouleurVueCab,Temp2);
+					courant = Math.min(courant,Delta(CouleurVueCab,Temp2));
 				}
 				if (courant > bestc) {
 					best = j ;
@@ -664,7 +663,7 @@ public class NodeBuilder implements ItemBuilder {
 		double Deltab = C1[2] - C2[2] ;
 		double DeltaH = Math.sqrt(Deltaa*Deltaa + Deltab*Deltab - DeltaC*DeltaC) ;
 		
-		return DeltaL*DeltaL+ (DeltaC/(1+0.045*C1s))*(DeltaC/(1+0.045*C1s))+ (DeltaH/(1+0.015*C1s))*(DeltaH/(1+0.015*C1s)) ;
+		return Math.sqrt(DeltaL*DeltaL+ (DeltaC/(1+0.045*C1s))*(DeltaC/(1+0.045*C1s))+ (DeltaH/(1+0.015*C1s))*(DeltaH/(1+0.015*C1s))) ;
 		//return Math.sqrt((C1[0]-C2[0])*(C1[0]-C2[0])+ (C1[1]-C2[1])*(C1[1]-C2[1])+ (C1[2]-C2[2])*(C1[2]-C2[2])) ;
 		
 	}
