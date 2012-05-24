@@ -57,6 +57,7 @@ import java.lang.String;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.*;
 
 
 /**
@@ -100,16 +101,11 @@ public class NodeBuilder implements ItemBuilder {
 		}
 		int i_n = 0 ;
 		
-		int K =(int) Math.ceil(Math.pow(NbCommunautes+5,1./3.)) ;
 		ArrayList<Double[]> StockCouleur = new ArrayList<Double[]>() ;
 		ArrayList<Double[]> CommCouleurRYB = new ArrayList<Double[]>() ;
-		for (int i = 0 ; i < K ; i++) {
-			for (int i2 = 0 ; i2 < K ; i2++) {
-				for (int i3 = 0 ; i3 < K ; i3++) {
-					Double[] couleur = {((double)i/(double)K),((double)i2/(double)K),((double)i3/(double)K)} ; 
+		for (int i = 0 ; i < NbCommunautes+2 ; i++) {
+			Double[] couleur = {(360.*(double)i/((double) (NbCommunautes+2))),0.75+((double)i%2./4.),0.75+((double)i%2./4.) } ; 
 					StockCouleur.add(couleur) ;
-				}
-			}
 		}
 		
 		
@@ -129,14 +125,44 @@ public class NodeBuilder implements ItemBuilder {
 		}
 		
 		Node[] nodes = graph.getNodes().toArray();
-		
+		Double[] couleur = {0.,0.,0.} ; 
 		for (int i = 0 ; i <= NbCommunautes ; i++) {
-			CommCouleurRYB.add(StockCouleur.get(0)) ;
+			CommCouleurRYB.add(couleur) ;
 		}
 		
-		StockCouleur.remove(0) ;
+										 //StockCouleur.remove(0) ;		
+		Queue<Integer> queue = new LinkedList<Integer>();
+		queue.add(0) ;
 		
-		for (int i = 0 ; i <= NbCommunautes ; i++) {
+		int i = 0 ;
+		int jj = 0 ;
+		
+		while (jj <= NbCommunautes) {
+			
+			jj++ ;
+
+			if (queue.isEmpty()) {
+				for (int ii = 0 ; ii <= NbCommunautes ; ii++) {
+					Double[] temp = CommCouleurRYB.get(ii) ;
+					if (temp[2] == 0) {
+						i = ii ;
+					}
+				}
+			}
+			else {
+				i = queue.remove() ;
+				Double[] temp = CommCouleurRYB.get(i) ;
+				while(temp[2] != 0 && ! queue.isEmpty()) {
+					i = queue.remove() ;
+				}
+				for (int ii = 0 ; ii <= NbCommunautes ; ii++) {
+					temp = CommCouleurRYB.get(ii) ;
+					if (temp[2] == 0) {
+						i = ii ;
+					}
+				}
+			}
+			
 			
 			ArrayList<Double[]> BeFarTo = new ArrayList<Double[]>() ;
 			BeFarTo.add(CommCouleurRYB.get(i)) ;
@@ -150,6 +176,10 @@ public class NodeBuilder implements ItemBuilder {
 						int c = Integer.parseInt(temp.getItem(_i)) ;
 						
 						boolean addthis = true ;
+						
+						if (java.util.Arrays.equals(CommCouleurRYB.get(c),couleur) && c != i) {
+							queue.add(c) ;
+						}
 						
 						for (int ii = 0 ; ii < BeFarTo.size() ; ii++) {
 							if (java.util.Arrays.equals(CommCouleurRYB.get(c),BeFarTo.get(ii))) {
@@ -216,7 +246,7 @@ public class NodeBuilder implements ItemBuilder {
 
 		ArrayList<ArrayList<Integer>> ConvexHullList = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Float> AreaHull = new ArrayList<Float>() ;
-		for (int i = 0 ; i < Communities.size() ; i++) {
+		for (i = 0 ; i < Communities.size() ; i++) {
 			first = 0 ;
 			Node noeud = nodes[Communities.get(i).get(0)] ;
 			x = noeud.getNodeData().x() ;
@@ -300,7 +330,7 @@ public class NodeBuilder implements ItemBuilder {
 		
 		System.err.println("###################") ;
 		
-		for (int i = 0 ; i < AreaHull.size() ; i++) {
+		for (i = 0 ; i < AreaHull.size() ; i++) {
 			System.err.println(AreaHull.get(i)+" "+AreaHull.get(i) / Communities.get(i).size()) ;
 		}
 
@@ -317,7 +347,7 @@ public class NodeBuilder implements ItemBuilder {
 		}*/
 		
         Item[] items = new NodeItem[graph.getNodeCount()];
-        int i = 0;
+		i = 0;
 		int d = 0 ;
         for (Node n : graph.getNodes()) {
             NodeItem nodeItem = new NodeItem(n.getNodeData().getRootNode());
@@ -440,6 +470,48 @@ public class NodeBuilder implements ItemBuilder {
 		return retour ;
 	}
 	
+	public Double[] HSVToRGB(double h, double s, double v) {
+		double hh = h / 60. ;
+		double c = v * s ;
+		double x = c * ( 1 - Math.abs((hh % 2) -1) ) ;
+		double[] temp = {0,0,0} ;
+		if (hh < 1) {
+			temp[0] = c ;
+			temp[1] = x ;
+			temp[2] = 0. ;
+		}
+		else if (hh < 2) {
+			temp[0] = x ;
+			temp[1] = c ;
+			temp[2] = 0. ;
+		}
+		else if (hh < 3) {
+			temp[0] = 0. ;
+			temp[1] = c ;
+			temp[2] = x ;
+		}
+		else if (hh < 4) {
+			temp[0] = 0. ;
+			temp[1] = x  ;
+			temp[2] = c ;
+		}
+		else if (hh < 5) {
+			temp[0] = x ;
+			temp[1] = 0. ;
+			temp[2] = c ;
+		}
+		else if (hh < 6) {
+			temp[0] = c ;
+			temp[1] = 0. ;
+			temp[2] = x ;
+		}
+		
+		double m = v - c ;
+		
+		Double[] retour = {temp[0]+m,temp[1]+m,temp[2]+m} ;
+		return retour ;
+	}
+	
 	public Double[] RGBToXYZ(double r, double g, double b) {
 		double var_R = r ;
 		double var_G = g ;
@@ -507,7 +579,7 @@ public class NodeBuilder implements ItemBuilder {
 	}
 	
 	public Double[] RYBToCab(double r, double y, double b) {
-		Double[] RGB =  RYBToRGB(r,y,b) ;
+		Double[] RGB =  HSVToRGB(r,y,b) ;
 		Double[] XYZ = RGBToXYZ(RGB[0],RGB[1],RGB[2]) ;
 		Double[] Cab = XYZToCab(XYZ[0],XYZ[1],XYZ[2]) ;
 		
@@ -537,13 +609,24 @@ public class NodeBuilder implements ItemBuilder {
 	}
 	
 	public double RYBToR(double r, double y, double b) {
-		return 1 * (1 - r) * (1 - b) * (1 - y) + 1 * r * (1 - b) * (1 - y) + 0.163 * (1 - r) * b * (1 - y) + 0.5 * r * b * (1 - y) + 1 * (1 - r) * (1 - b) * y + 1 * r * (1 - b) * y + 0 * (1 - r) * b * y + 0.2 * r * b * y ;
+		
+		Double[] t = HSVToRGB(r,y,b) ;
+		
+		return (double)t[0] ;
+		
+		//return 1 * (1 - r) * (1 - b) * (1 - y) + 1 * r * (1 - b) * (1 - y) + 0.163 * (1 - r) * b * (1 - y) + 0.5 * r * b * (1 - y) + 1 * (1 - r) * (1 - b) * y + 1 * r * (1 - b) * y + 0 * (1 - r) * b * y + 0.2 * r * b * y ;
     }
 	public double RYBToG(double r, double y, double b) {
-		return 1 * (1 - r) * (1 - b) * (1 - y) + 0 * r * (1 - b) * (1 - y) + 0.373 * (1 - r) * b * (1 - y) + 0 * r * b * (1 - y) + 1 * (1 - r) * (1 - b) * y + 0.5 * r * (1 - b) * y + 0.66 * (1 - r) * b * y + 0.094 * r * b * y ;
+		Double[] t = HSVToRGB(r,y,b) ;
+		
+		return (double)t[1] ;
+		//return 1 * (1 - r) * (1 - b) * (1 - y) + 0 * r * (1 - b) * (1 - y) + 0.373 * (1 - r) * b * (1 - y) + 0 * r * b * (1 - y) + 1 * (1 - r) * (1 - b) * y + 0.5 * r * (1 - b) * y + 0.66 * (1 - r) * b * y + 0.094 * r * b * y ;
     }
 	public double RYBToB(double r, double y, double b) {
-		return 1 * (1 - r) * (1 - b) * (1 - y) + 0 * r * (1 - b) * (1 - y) + 0.6 * (1 - r) * b * (1 - y) + 0.5 * r * b * (1 - y) + 0 * (1 - r) * (1 - b) * y + 0 * r * (1 - b) * y + 0.2 * (1 - r) * b * y + 0 * r * b * y ;
+		Double[] t = HSVToRGB(r,y,b) ;
+		
+		return (double)t[2] ;
+		//return 1 * (1 - r) * (1 - b) * (1 - y) + 0 * r * (1 - b) * (1 - y) + 0.6 * (1 - r) * b * (1 - y) + 0.5 * r * b * (1 - y) + 0 * (1 - r) * (1 - b) * y + 0 * r * (1 - b) * y + 0.2 * (1 - r) * b * y + 0 * r * b * y ;
     }
 	
 }
